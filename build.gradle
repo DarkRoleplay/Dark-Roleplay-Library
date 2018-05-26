@@ -9,8 +9,8 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.0"
-group = "net.dark_roleplay.library"
+version = "1.12.2-0.1.0"
+group = "net.dark_roleplay"
 archivesBaseName = "drplibrary"
 
 sourceCompatibility = targetCompatibility = '1.8'
@@ -37,8 +37,16 @@ processResources {
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
         
-    // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+jar {
+	manifest {
+        attributes([
+                'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}",
+                'Timestamp': System.currentTimeMillis(),
+        ])
     }
 }
