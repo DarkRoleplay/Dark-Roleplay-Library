@@ -10,8 +10,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Created: 26.05.2018
- * Last edit: 26.05.2018
+ * Created: 29.05.2018
+ * Last edit: 29.05.2018
  * Last edit by: JTK222
  * Version added: 0.1.0
  * State: completed
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class PacketBase<REQ extends IMessage> implements IMessage, IMessageHandler<REQ, REQ> {
 
 	@Override
-	public REQ onMessage(REQ message, MessageContext ctx) {
+	public final REQ onMessage(REQ message, MessageContext ctx) {
 		if(ctx.side == Side.SERVER) {
 			handleServerSide(message, ctx.getServerHandler().player);
 		} else {
@@ -46,14 +46,13 @@ public abstract class PacketBase<REQ extends IMessage> implements IMessage, IMes
 	/**
 	 * Has default handling if the Packet is received on the Client,
 	 * therefore this should be used if the Packet should just be receiveable by the Server.
-	 * @author JTK222
 	 *
 	 * @param <REQ>
 	 */
 	public static abstract class Server<REQ extends IMessage> extends PacketBase<REQ>{
 		@Override
 		@SideOnly(Side.CLIENT)
-		public void handleClientSide(REQ message, EntityPlayer player){
+		public final void handleClientSide(REQ message, EntityPlayer player){
 			LogManager.getLogger().error("Received a packet that was ment to be only used to send Data form Client to Server!");
 			LogManager.getLogger().error("False Packet: "  + message.getClass().getSimpleName());
 		}
@@ -62,13 +61,12 @@ public abstract class PacketBase<REQ extends IMessage> implements IMessage, IMes
 	/**
 	 * Has default handling if the Packet is received on the Server,
 	 * therefore this should be used if the Packet should just be receiveable by the Client.
-	 * @author JTK222
 	 *
 	 * @param <REQ>
 	 */
 	public static abstract class Client<REQ extends IMessage> extends PacketBase<REQ>{
 		@Override
-		public void handleServerSide(REQ message, EntityPlayer player){
+		public final void handleServerSide(REQ message, EntityPlayer player){
 			LogManager.getLogger().error("Received a packet that was ment to be only used to send Data form Server to Client!");
 			LogManager.getLogger().error("False Packet: "  + message.getClass().getSimpleName());
 		}
