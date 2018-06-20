@@ -11,7 +11,7 @@ import net.minecraft.world.World;
  * Version added: 0.1.0
  * State: Experimental
  */
-public interface IWalkedUpon {
+public interface IWalkedUponBehavior {
 
 	public void execute(World world, BlockPos pos, Entity entity);
 

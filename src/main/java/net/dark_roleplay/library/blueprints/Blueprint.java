@@ -31,6 +31,7 @@ public class Blueprint {
 
 	private short[][][] structure;
 	private NBTTagCompound[] tileEntities;
+	private NBTTagCompound[] entities;
 
 	protected Blueprint(short sizeX, short sizeY, short sizeZ, short palleteSize, IBlockState[] pallete,
 			short[][][] structure, NBTTagCompound[] tileEntities, List<String> requiredMods) {
@@ -228,46 +229,6 @@ public class Blueprint {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Used to generate a Blueprint without Rotation and Mirroring
-	 * 
-	 * @param world
-	 *            The world to generate the structure
-	 * @param pos
-	 *            The Position to build the structure
-	 */
-	public void build(World world, BlockPos pos) {
-		build(world, pos, Rotation.NONE, Mirror.NONE);
-	}
-
-	/**
-	 * Used to generate a Blueprint with Rotation but without Mirroring
-	 * 
-	 * @param world
-	 *            The world to generate the structure
-	 * @param pos
-	 *            The Position to build the structure
-	 * @param rotation
-	 *            The Rotation with which the structure should be generated
-	 */
-	public void build(World world, BlockPos pos, Rotation rotation) {
-		build(world, pos, rotation, Mirror.NONE);
-	}
-
-	/**
-	 * Used to generate a Blueprint with Rotation but without Mirroring
-	 * 
-	 * @param world
-	 *            The world to generate the structure
-	 * @param pos
-	 *            The Position to build the structure*
-	 * @param mirror
-	 *            The Mirroring with which the structure should be generated
-	 */
-	public void build(World world, BlockPos pos, Mirror mirroring) {
-		build(world, pos, Rotation.NONE, mirroring);
 	}
 
 	/**

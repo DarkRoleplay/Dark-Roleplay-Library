@@ -12,7 +12,7 @@ import net.dark_roleplay.library.blocks.behaviors.IDestroyedBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IFallenUponBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IHarvestedBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IPlacedBehavior;
-import net.dark_roleplay.library.blocks.behaviors.IWalkedUpon;
+import net.dark_roleplay.library.blocks.behaviors.IWalkedUponBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IPlacementBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IRainTickBehavior;
 import net.dark_roleplay.library.blocks.behaviors.IRandomDisplayTickBehavior;
@@ -57,7 +57,7 @@ public class DRPBlock extends Block {
 	private IRandomDisplayTickBehavior randomDisplayTickBehavior = null;
 	private IRandomTickBehavior randomTickBehavior = null;
 	private IUpdateTickBehavior updateTickBehavior = null;
-	private IWalkedUpon walkedUponBehavior = null;
+	private IWalkedUponBehavior walkedUponBehavior = null;
 	
 
 	public DRPBlock(String name, BlockSettings settings) {
@@ -174,14 +174,105 @@ public class DRPBlock extends Block {
 		if(this.harvestedBehavior != null)
 			this.harvestedBehavior.execute(world, pos, state, player);
 	}
-
+	
 	/**
 	 * Sets the Behavior that's being called when the Block is Activated
 	 * @param behaviour
 	 * @return itself
 	 */
-	public DRPBlock setActivationBehavior(IActivatedBehavior behavior) {
+	public DRPBlock setActivatedBehavior(IActivatedBehavior behavior) {
 		this.onActivatedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is added to the world, this is called before the TileEntity is created
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setAddedBehavior(IAddedBehavior behavior) {
+		this.addedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is broken before the TileEntity is destroyed
+	 * (You don't need to remove the TileEntity yourself, it's done automaticly)
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setBreakingBehavior(IBreakingBehavior behavior) {
+		this.breakingBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is right clicked
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setClickedBehavior(IClickedBehavior behavior) {
+		this.clickedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when an Entity collides with this block
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setCollisionBehavior(ICollidedWithBehavior behavior) {
+		this.collidedWithBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is destroyed
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setDestructionBehavior(IDestroyedBehavior behavior) {
+		this.destroyedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is destroyed by an explosion
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setExplosionBehavior(IExplodedBehavior behavior) {
+		this.explodedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when an Entity falls onto this Block
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setFallenUponBehavior(IFallenUponBehavior behavior) {
+		this.fallenUponBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is harvested
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setHarvestingBehavior(IHarvestedBehavior behavior) {
+		this.harvestedBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when the Block is Placed
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setPlacedBehavior(IPlacedBehavior behavior) {
+		this.placedBehavior = behavior;
 		return this;
 	}
 	
@@ -192,6 +283,56 @@ public class DRPBlock extends Block {
 	 */
 	public DRPBlock setPlacementBehavior(IPlacementBehavior behavior) {
 		this.placementBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called on a random Rain Tick
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setRainTickBehavior(IRainTickBehavior behavior) {
+		this.rainTickBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called on a random Display Tick
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setDisplayTickBehavior(IRandomDisplayTickBehavior behavior) {
+		this.randomDisplayTickBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called on a Random Tick
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setRandomTickBehavior(IRandomTickBehavior behavior) {
+		this.randomTickBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called on an Update Tick
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setUpdateTickBehavior(IUpdateTickBehavior behavior) {
+		this.updateTickBehavior = behavior;
+		return this;
+	}
+	
+	/**
+	 * Sets the Behavior that's being called when an Entity Walks on this Block
+	 * @param behaviour
+	 * @return itself
+	 */
+	public DRPBlock setWalkedUponBehavior(IWalkedUponBehavior behavior) {
+		this.walkedUponBehavior = behavior;
 		return this;
 	}
 }
