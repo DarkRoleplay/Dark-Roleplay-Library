@@ -1,7 +1,8 @@
-package net.dark_roleplay.library.blueprints;
+package net.dark_roleplay.library.experimental.blueprintsv2;
 
 import java.util.List;
 
+import net.dark_roleplay.library.blueprints.Settings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStructure;
 import net.minecraft.block.state.IBlockState;

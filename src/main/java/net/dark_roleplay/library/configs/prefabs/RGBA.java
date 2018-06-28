@@ -2,6 +2,13 @@ package net.dark_roleplay.library.configs.prefabs;
 
 import net.minecraftforge.common.config.Config;
 
+/**
+ * Created: 27.06.2018
+ * Last edit: 27.06.2018
+ * Last edit by: JTK222
+ * Version added: 0.1.0
+ * State: completed
+ */
 public class RGBA {
 	
 	@Config.Name("Red Value")

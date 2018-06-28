@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.blueprints;
+package net.dark_roleplay.library.experimental.blueprintsv2;
 
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
