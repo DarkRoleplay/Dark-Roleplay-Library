@@ -26,6 +26,11 @@ public class CapabilityProvider <C> implements ICapabilitySerializable<NBTBase>{
         this.instance = capability.getDefaultInstance();
     }
     
+    public CapabilityProvider(Capability<C> capability, C instance){
+        this.capability = capability;
+        this.instance = instance;
+    }
+    
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing){
         return capability != null && capability == this.capability;
