@@ -22,7 +22,7 @@ minecraft {
     version = "1.12.2-14.23.4.2703"
     runDir = "run"
     
-    mappings = "snapshot_20171003"
+    mappings = "${mcMappings}"
 }
 
 dependencies {}
@@ -44,8 +44,17 @@ processResources {
 
 //Signing the Jar
 task signJar(type: SignJar, dependsOn: reobfJar) {
-	inputFile = jar.archivePath
-	outputFile = jar.archivePath
+    onlyIf {
+        project.hasProperty('keyStore')
+    }
+
+	keyStore = project.findProperty('keyStore')
+    alias = project.findProperty('keyStoreAlias')
+    storePass = project.findProperty('keyStorePass')
+    keyPass = project.findProperty('keyStoreKeyPass')
+	
+    inputFile = jar.archivePath
+    outputFile = jar.archivePath
 }
 build.dependsOn signJar
 

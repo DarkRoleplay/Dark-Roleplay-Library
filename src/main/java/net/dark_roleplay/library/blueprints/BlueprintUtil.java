@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -71,37 +73,45 @@ public class BlueprintUtil {
 	public static Blueprint createBlueprint(World world, BlockPos pos, short sizeX, short sizeY, short sizeZ,
 			String name, String... architects) {
 		List<IBlockState> pallete = new ArrayList<IBlockState>();
+		//Allways add AIR to Pallete
+		pallete.add(Blocks.AIR.getDefaultState());
 		short[][][] structure = new short[sizeY][sizeZ][sizeX];
 
 		List<NBTTagCompound> tileEntities = new ArrayList<NBTTagCompound>();
 
 		List<String> requiredMods = new ArrayList<String>();
 
-		for (short y = 0; y < sizeY; y++) {
-			for (short z = 0; z < sizeZ; z++) {
-				for (short x = 0; x < sizeX; x++) {
-					IBlockState state = world.getBlockState(pos.add(x, y, z));
-					String modName;
-					if (Loader.isModLoaded(modName = state.getBlock().getRegistryName().getResourceDomain())
-							&& !requiredMods.contains(modName)) {
-						requiredMods.add(modName);
-					}
-					if (!Loader.isModLoaded(modName)) {
-						state = Blocks.AIR.getDefaultState();
-					}
-					TileEntity te = world.getTileEntity(pos.add(x, y, z));
-					if (te != null) {
-						NBTTagCompound teTag = te.serializeNBT();
-						teTag.setShort("x", x);
-						teTag.setShort("y", y);
-						teTag.setShort("z", z);
-						tileEntities.add(teTag);
-					}
-					if (!pallete.contains(state))
-						pallete.add(state);
-					structure[y][z][x] = (short) pallete.indexOf(state);
-				}
+		
+		
+		long time = System.currentTimeMillis();
+
+		Iterator<MutableBlockPos> positions = BlockPos.getAllInBoxMutable(pos, pos.add(sizeX - 1, sizeY - 1, sizeZ - 1)).iterator();
+		while(positions.hasNext()) {
+			MutableBlockPos mutablePos = positions.next();
+			IBlockState state = world.getBlockState(mutablePos);
+			String modName = state.getBlock().getRegistryName().getResourceDomain();
+
+			short x = (short) (mutablePos.getX() - pos.getX()), y = (short) (mutablePos.getY() - pos.getY()), z = (short) (mutablePos.getZ() - pos.getZ());
+			
+			if(!requiredMods.contains(modName)) {
+				if(Loader.isModLoaded(modName))
+					requiredMods.add(modName);
+			}else if(!Loader.isModLoaded(modName)) {
+				structure[y][z][x] = (short) pallete.indexOf(Blocks.AIR.getDefaultState());
+				continue;
 			}
+			
+			TileEntity te = world.getTileEntity(mutablePos);
+			if (te != null) {
+				NBTTagCompound teTag = te.serializeNBT();
+				teTag.setShort("x", x);
+				teTag.setShort("y", y);
+				teTag.setShort("z", z);
+				tileEntities.add(teTag);
+			}
+			if (!pallete.contains(state))
+				pallete.add(state);
+			structure[y][z][x] = (short) pallete.indexOf(state);
 		}
 
 		IBlockState[] states = new IBlockState[pallete.size()];
