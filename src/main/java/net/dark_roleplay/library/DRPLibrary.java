@@ -3,12 +3,8 @@ package net.dark_roleplay.library;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.dark_roleplay.library.experimental.guis.ModularGui_Handler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -30,10 +26,7 @@ public class DRPLibrary {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		if(event.getSide().isClient()) {
-			IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
-			if(manager instanceof IReloadableResourceManager) {
-			    ((IReloadableResourceManager)manager).registerReloadListener(new ModularGui_Handler());
-			}
+			ClientProxy.stuff();
 		}
 	}
 	
