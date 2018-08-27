@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.blocks.behaviors;
+package net.dark_roleplay.library.experimental.blocks.behaviors;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;

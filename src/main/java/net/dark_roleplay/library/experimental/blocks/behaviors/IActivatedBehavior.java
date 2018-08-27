@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.blocks.behaviors;
+package net.dark_roleplay.library.experimental.blocks.behaviors;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

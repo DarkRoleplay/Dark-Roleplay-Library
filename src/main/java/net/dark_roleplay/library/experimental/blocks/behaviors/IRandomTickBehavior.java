@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.blocks.behaviors;
+package net.dark_roleplay.library.experimental.blocks.behaviors;
 
 import java.util.Random;
 
@@ -13,9 +13,8 @@ import net.minecraft.world.World;
  * Version added: 0.1.0
  * State: Experimental
  */
-public interface IRandomDisplayTickBehavior {
+public interface IRandomTickBehavior {
 
-	public void execute(IBlockState state, World world, BlockPos pos, Random rand);
-
+	public void execute(World world, BlockPos pos, IBlockState state, Random random);
 	
 }

@@ -1,6 +1,5 @@
-package net.dark_roleplay.library.blocks.behaviors;
+package net.dark_roleplay.library.experimental.blocks.behaviors;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,8 +11,8 @@ import net.minecraft.world.World;
  * Version added: 0.1.0
  * State: Experimental
  */
-public interface ICollidedWithBehavior {
+public interface IFallenUponBehavior {
 
-	public void execute(World world, BlockPos pos, IBlockState state, Entity entity);
-	
+	public void execute(World world, BlockPos pos, Entity entity, float fallDistance);
+
 }

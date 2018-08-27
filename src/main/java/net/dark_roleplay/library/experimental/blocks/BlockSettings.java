@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.blocks;
+package net.dark_roleplay.library.experimental.blocks;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
