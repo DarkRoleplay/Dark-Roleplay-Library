@@ -45,48 +45,48 @@ public class DRPLibrary {
 		proxy.init(event);
 	}
 	
-	@EventBusSubscriber(modid = References.MODID)
-	public static class RegistriesAndStuff{
-		@SubscribeEvent
-		public static void registerItems(RegistryEvent.Register<Item> event) {
-			for(Item item : items) {
-				event.getRegistry().register(item);
-			}
-		}
-		
-		@SubscribeEvent
-		public static void registerBlocks(RegistryEvent.Register<Block> event) {
-//			Block block = new ConnectedModelBlock();
-//			registerBlocks(event.getRegistry(), CreativeTabs.BUILDING_BLOCKS,
-//					
-//				new Block(Material.IRON)
-//					.setRegistryName(References.MODID, "block name"),
-//					
-//				new Block(Material.IRON)
-//					.setRegistryName(References.MODID, "block2 name"),
-//
-//				new Block(Material.IRON)
-//					.setRegistryName(References.MODID, "block3 name"),
+//	@EventBusSubscriber(modid = References.MODID)
+//	public static class RegistriesAndStuff{
+//		@SubscribeEvent
+//		public static void registerItems(RegistryEvent.Register<Item> event) {
+//			for(Item item : items) {
+//				event.getRegistry().register(item);
+//			}
+//		}
+//		
+//		@SubscribeEvent
+//		public static void registerBlocks(RegistryEvent.Register<Block> event) {
+////			Block block = new ConnectedModelBlock();
+////			registerBlocks(event.getRegistry(), CreativeTabs.BUILDING_BLOCKS,
+////					
+////				new Block(Material.IRON)
+////					.setRegistryName(References.MODID, "block name"),
+////					
+////				new Block(Material.IRON)
+////					.setRegistryName(References.MODID, "block2 name"),
+////
+////				new Block(Material.IRON)
+////					.setRegistryName(References.MODID, "block3 name"),
+////				
+////				block
+////			);
+//			
+////			ConnectedModelLoader.registerConnectedModelBlock(block);
+//		}
+//		
+//		//We create a list, in which we store all ItemBlocks
+//		private static List<Item> items = new ArrayList<Item>();
+//		
+//		//A method that automaticly creates an Item for a Block
+//		private static void registerBlocks(IForgeRegistry<Block> registry, CreativeTabs tab, Block... blocks) {
+//			for(Block block : blocks) {
+//				registry.register(block);
 //				
-//				block
-//			);
-			
-//			ConnectedModelLoader.registerConnectedModelBlock(block);
-		}
-		
-		//We create a list, in which we store all ItemBlocks
-		private static List<Item> items = new ArrayList<Item>();
-		
-		//A method that automaticly creates an Item for a Block
-		private static void registerBlocks(IForgeRegistry<Block> registry, CreativeTabs tab, Block... blocks) {
-			for(Block block : blocks) {
-				registry.register(block);
-				
-				ItemBlock item = (ItemBlock) new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(tab);
-				items.add(item);
-			}
-		}
-	}
+//				ItemBlock item = (ItemBlock) new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(tab);
+//				items.add(item);
+//			}
+//		}
+//	}
 	
 	public static class ServerProxy implements IProxy{
 		
