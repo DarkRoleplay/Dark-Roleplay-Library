@@ -4,11 +4,11 @@ import org.lwjgl.input.Mouse;
 
 import net.dark_roleplay.library.experimental.guis.IGuiElement;
 import net.dark_roleplay.library.experimental.guis.modular.ModularGui_Drawer;
-import net.dark_roleplay.library.experimental.variables.wrappers.Variable_Int;
+import net.dark_roleplay.library.experimental.variables.wrappers.IntegerWrapper;
 
 public class Gui_Scrollbar extends IGuiElement.IMPL{
 
-	private Variable_Int var;
+	private IntegerWrapper var;
 	
 	private int min, max;
 	private boolean direction;
@@ -18,7 +18,7 @@ public class Gui_Scrollbar extends IGuiElement.IMPL{
 
 	
 	//dir = true = horizontal
-	public Gui_Scrollbar(Variable_Int var, int min, int max, boolean dir){
+	public Gui_Scrollbar(IntegerWrapper var, int min, int max, boolean dir){
 		this.var = var;
 		this.min = min;
 		this.max = max;

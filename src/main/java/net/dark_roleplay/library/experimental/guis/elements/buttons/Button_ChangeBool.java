@@ -1,14 +1,14 @@
 package net.dark_roleplay.library.experimental.guis.elements.buttons;
 
 import net.dark_roleplay.library.experimental.guis.elements.Gui_Button;
-import net.dark_roleplay.library.experimental.variables.wrappers.Variable_Boolean;
+import net.dark_roleplay.library.experimental.variables.wrappers.BooleanWrapper;
 
 public class Button_ChangeBool extends Gui_Button{
 
-	private Variable_Boolean var;
+	private BooleanWrapper var;
 	private int amount;
 	
-	public Button_ChangeBool(Variable_Boolean var, int posX, int posY, int width, int height) {
+	public Button_ChangeBool(BooleanWrapper var, int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
 		this.var = var;
 	}

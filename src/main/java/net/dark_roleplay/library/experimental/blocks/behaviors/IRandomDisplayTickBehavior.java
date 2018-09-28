@@ -6,16 +6,17 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-/**
- * Created: 31.05.2018
- * Last edit: 31.05.2018
- * Last edit by: JTK222
- * Version added: 0.1.0
- * State: Experimental
- */
-public interface IRandomDisplayTickBehavior {
+public interface IRandomDisplayTickBehavior extends IBlockBehavior{
 
 	public void execute(IBlockState state, World world, BlockPos pos, Random rand);
 
-	
+	public static class Multiple extends MultiBehavior<IRandomDisplayTickBehavior> implements IRandomDisplayTickBehavior{
+
+		@Override
+		public void execute(IBlockState state, World world, BlockPos pos, Random rand) {
+			for(IRandomDisplayTickBehavior behavior : this.behaviors) {
+				behavior.execute(state, world, pos, rand);
+			}
+		}
+	}
 }

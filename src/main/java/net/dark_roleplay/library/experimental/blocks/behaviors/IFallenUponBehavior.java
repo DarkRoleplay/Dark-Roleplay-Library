@@ -4,15 +4,17 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-/**
- * Created: 31.05.2018
- * Last edit: 31.05.2018
- * Last edit by: JTK222
- * Version added: 0.1.0
- * State: Experimental
- */
-public interface IFallenUponBehavior {
+public interface IFallenUponBehavior extends IBlockBehavior{
 
 	public void execute(World world, BlockPos pos, Entity entity, float fallDistance);
 
+	public static class Multiple extends MultiBehavior<IFallenUponBehavior> implements IFallenUponBehavior{
+
+		@Override
+		public void execute(World world, BlockPos pos, Entity entity, float fallDistance) {
+			for(IFallenUponBehavior behavior : this.behaviors) {
+				behavior.execute(world, pos, entity, fallDistance);
+			}
+		}
+	}
 }

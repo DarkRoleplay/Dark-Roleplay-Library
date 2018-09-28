@@ -2,13 +2,13 @@ package net.dark_roleplay.library.experimental.guis.elements;
 
 import net.dark_roleplay.library.experimental.guis.IGuiElement;
 import net.dark_roleplay.library.experimental.guis.modular.ModularGui_Drawer;
-import net.dark_roleplay.library.experimental.variables.wrappers.Variable_Int;
+import net.dark_roleplay.library.experimental.variables.wrappers.IntegerWrapper;
 import net.minecraft.client.renderer.GlStateManager;
 
 public class Gui_ScrolledPanel extends Gui_Panel.IMPL{
 
-	private Variable_Int scrollX = new Variable_Int(0);
-	private Variable_Int scrollY = new Variable_Int(0);
+	private IntegerWrapper scrollX = new IntegerWrapper(0);
+	private IntegerWrapper scrollY = new IntegerWrapper(0);
 	private Gui_Scrollbar scrollBarX;
 	private Gui_Scrollbar scrollBarY;
 	

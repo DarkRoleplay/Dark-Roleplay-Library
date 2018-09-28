@@ -1,6 +1,6 @@
-package net.dark_roleplay.library.experimental.data_compression;
+ package net.dark_roleplay.library.experimental.data_compression;
 
-public class Integer {
+public class IntArrayCompression {
 
 	public static int[] compress(int bitCount, int[] data) {
 		int mask = (int) ((1L << bitCount) - 1);

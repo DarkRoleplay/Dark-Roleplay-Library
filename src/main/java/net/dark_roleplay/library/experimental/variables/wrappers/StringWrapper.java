@@ -1,22 +1,25 @@
 package net.dark_roleplay.library.experimental.variables.wrappers;
 
-public class Variable_String {
+public class StringWrapper {
 
 	private String value;
-	
-	public Variable_String(){
+
+	public StringWrapper(){
 		this.value = "";
 	}
-	
-	public Variable_String(String value){
+
+	public StringWrapper(String value){
 		this.value = value;
 	}
-	
+
 	public void set(String value){
 		this.value = value;
+		this.markDirty();
 	}
-	
+
 	public String get(){
 		return this.value;
 	}
+
+	public void markDirty() {}
 }

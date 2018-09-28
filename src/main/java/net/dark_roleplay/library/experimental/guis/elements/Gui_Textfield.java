@@ -1,12 +1,12 @@
 package net.dark_roleplay.library.experimental.guis.elements;
 
 import net.dark_roleplay.library.experimental.guis.IGuiElement;
-import net.dark_roleplay.library.experimental.variables.wrappers.Variable_String;
+import net.dark_roleplay.library.experimental.variables.wrappers.StringWrapper;
 import net.minecraft.client.Minecraft;
 
 public class Gui_Textfield extends IGuiElement.IMPL{
 	
-	private Variable_String text;
+	private StringWrapper text;
 	
 	private int cursorPos;
 	private int cursorTick;
@@ -14,7 +14,7 @@ public class Gui_Textfield extends IGuiElement.IMPL{
 	private int selectionStart;
 	private int selectionEnd;
 	
-	public Gui_Textfield(Variable_String text, int posX, int posY, int width, int height, int maxLength){
+	public Gui_Textfield(StringWrapper text, int posX, int posY, int width, int height, int maxLength){
 		this.posX = posX;
 		this.posY = posY;
 		this.width = width;

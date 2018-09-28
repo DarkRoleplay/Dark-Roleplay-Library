@@ -7,15 +7,19 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-/**
- * Created: 31.05.2018
- * Last edit: 31.05.2018
- * Last edit by: JTK222
- * Version added: 0.1.0
- * State: Experimental
- */
-public interface IActivatedBehavior {
+public interface IActivatedBehavior extends IBlockBehavior{
 
 	public boolean execute(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ);
-	
+
+	public static class Multiple extends MultiBehavior<IActivatedBehavior> implements IActivatedBehavior{
+
+		@Override
+		public boolean execute(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+			for(IActivatedBehavior behavior : this.behaviors) {
+				if(behavior.execute(world, pos, state, player, hand, facing, hitX, hitY, hitZ))
+					return true;
+			}
+			return false;
+		}
+	}
 }

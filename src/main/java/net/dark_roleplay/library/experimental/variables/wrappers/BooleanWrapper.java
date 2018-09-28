@@ -1,22 +1,25 @@
 package net.dark_roleplay.library.experimental.variables.wrappers;
 
-public class Variable_Boolean{
+public class BooleanWrapper{
 
 	private boolean value;
-	
-	public Variable_Boolean(){
+
+	public BooleanWrapper(){
 		this.value = false;
 	}
-	
-	public Variable_Boolean(boolean value){
+
+	public BooleanWrapper(boolean value){
 		this.value = value;
 	}
-	
+
 	public void set(boolean value){
 		this.value = value;
+		this.markDirty();
 	}
-	
+
 	public boolean get(){
 		return this.value;
 	}
+
+	public void markDirty() {}
 }
