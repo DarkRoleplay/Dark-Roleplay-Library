@@ -16,6 +16,7 @@ import net.dark_roleplay.library.experimental.blocks.behaviors.IDestroyedBehavio
 import net.dark_roleplay.library.experimental.blocks.behaviors.IExplodedBehavior;
 import net.dark_roleplay.library.experimental.blocks.behaviors.IFallenUponBehavior;
 import net.dark_roleplay.library.experimental.blocks.behaviors.IHarvestedBehavior;
+import net.dark_roleplay.library.experimental.blocks.behaviors.INeighborChangedBehavior;
 import net.dark_roleplay.library.experimental.blocks.behaviors.IPlacedBehavior;
 import net.dark_roleplay.library.experimental.blocks.behaviors.IPlacementBehavior;
 import net.dark_roleplay.library.experimental.blocks.behaviors.IRainTickBehavior;
@@ -32,6 +33,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -69,6 +71,9 @@ public class DRPBlock extends Block {
 	private IRandomTickBehavior randomTickBehavior = null;
 	private IUpdateTickBehavior updateTickBehavior = null;
 	private IWalkedUponBehavior walkedUponBehavior = null;
+	private INeighborChangedBehavior neighborChangedBehavior = null;
+
+	//TODO add Collission Box Behavior (plants like)
 
 	private BlockSettings settings;
 	private Callable<TileEntity> tileEntityFactory;
@@ -96,6 +101,11 @@ public class DRPBlock extends Block {
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing){
 		return this.settings != null ? this.settings.getFaceShape() : BlockFaceShape.SOLID;
 	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state){
+		return this.settings != null ? this.settings.getRenderType() : EnumBlockRenderType.MODEL;
+    }
 
 	@Override
 	public boolean isFullCube(IBlockState state){
@@ -223,6 +233,12 @@ public class DRPBlock extends Block {
 	}
 
 	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if(this.neighborChangedBehavior != null)
+			this.neighborChangedBehavior.execute(state, world, pos, block, fromPos);
+	}
+
+	@Override
 	public boolean hasTileEntity(IBlockState state){
 		return this.tileEntityFactory != null;
 	}
@@ -293,6 +309,9 @@ public class DRPBlock extends Block {
 			}
 			if(behavior instanceof IWalkedUponBehavior) {
 				this.walkedUponBehavior = (IWalkedUponBehavior) behavior;
+			}
+			if(behavior instanceof INeighborChangedBehavior) {
+				this.neighborChangedBehavior = (INeighborChangedBehavior) behavior;
 			}
 		}
 

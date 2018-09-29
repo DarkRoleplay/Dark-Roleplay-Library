@@ -5,6 +5,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 
 /**
  * Created: 31.05.2018
@@ -24,6 +25,7 @@ public class BlockSettings {
 	private int lightOpacity = 0;
 	private BlockRenderLayer renderLayer;
 	private BlockFaceShape faceShape;
+	private EnumBlockRenderType renderType;
 
 	private boolean isFullCube = true;
 	private boolean isOpaqueCube = true;
@@ -72,6 +74,11 @@ public class BlockSettings {
 
 	public BlockSettings setBlockRenderLayer(BlockRenderLayer renderLayer) {
 		this.renderLayer = renderLayer;
+		return this;
+	}
+
+	public BlockSettings setBlockRenderType(EnumBlockRenderType renderType) {
+		this.renderType = renderType;
 		return this;
 	}
 
@@ -127,6 +134,10 @@ public class BlockSettings {
 
 	public BlockFaceShape getFaceShape() {
 		return this.faceShape;
+	}
+
+	public EnumBlockRenderType getRenderType() {
+		return this.renderType;
 	}
 
 	public BlockSettings copy() {
