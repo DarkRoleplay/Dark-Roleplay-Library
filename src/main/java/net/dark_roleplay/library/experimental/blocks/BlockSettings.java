@@ -23,6 +23,7 @@ public class BlockSettings {
 	private float blastResistance;
 	private float lightLevel = 0F;
 	private int lightOpacity = 0;
+	private float slipperiness = 0F;
 	private BlockRenderLayer renderLayer;
 	private BlockFaceShape faceShape;
 	private EnumBlockRenderType renderType;
@@ -92,6 +93,11 @@ public class BlockSettings {
 		return this;
 	}
 
+	public BlockSettings setSlipperiness(float slipperiness) {
+		this.slipperiness = slipperiness;
+		return this;
+	}
+
 	public Material getMaterial() {
 		return this.material;
 	}
@@ -138,6 +144,10 @@ public class BlockSettings {
 
 	public EnumBlockRenderType getRenderType() {
 		return this.renderType;
+	}
+
+	public float getSlipperiness() {
+		return this.slipperiness;
 	}
 
 	public BlockSettings copy() {

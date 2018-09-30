@@ -89,6 +89,7 @@ public class DRPBlock extends Block {
 		this.setLightLevel(settings.getLightLevel());
 		this.setLightOpacity(settings.getLightOpacity());
 		this.fullBlock = this.getDefaultState().isOpaqueCube();
+		this.setDefaultSlipperiness(settings.getSlipperiness());
 	}
 
 	@Override
