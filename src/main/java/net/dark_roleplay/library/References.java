@@ -13,10 +13,10 @@ public class References {
 
 	public static final String MODID = "drplibrary";
 	public static final String NAME = "Dark Roleplay Library";
-	public static final String VERSION = "1.12.2-0.1.2.3-pre";
+	public static final String VERSION = "1.12.2-0.1.3-pre";
 	public static final String ACCEPTEDVERSIONS = "[1.12.2,1.13)";
 	public static final String UPDATE_JSON = "https://dark-roleplay.net/files/versions/drplibrary/drplibrary-1.12.2.json";
-	public static final String DEPENDECIES = "required-after:forge@[1.12.2-14.23.4.2703,)";
+	public static final String DEPENDECIES = "";
 	public static final String URL = "http://dark-roleplay.net/";
 	public static final List<String> AUTHORS = Arrays.asList("JTK222");
 	public static final String CREDITS = "Lead Programmer: JTK222";

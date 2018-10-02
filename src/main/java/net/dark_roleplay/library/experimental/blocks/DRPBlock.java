@@ -82,7 +82,7 @@ public class DRPBlock extends Block {
 		super(settings.getMaterial(), settings.getMapColor());
 		this.settings = settings;
 		this.setRegistryName(name);
-		this.setUnlocalizedName(this.getRegistryName().getResourceDomain() + "." + name);
+		this.setTranslationKey(this.getRegistryName().getNamespace() + "." + name);
 		this.setSoundType(settings.getSoundType());
 		this.setHardness(settings.getHardness());
 		this.setResistance(settings.getBlastResistance());
@@ -94,7 +94,7 @@ public class DRPBlock extends Block {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer(){
+	public BlockRenderLayer getRenderLayer(){
 		return this.settings != null ? this.settings.getBlockRenderLayer() : BlockRenderLayer.SOLID;
 	}
 
@@ -143,7 +143,7 @@ public class DRPBlock extends Block {
 
 
 	@Override
-	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state) {
 		if(this.destroyedBehavior != null)
 			this.destroyedBehavior.execute(world, pos, state);
 	}
@@ -197,7 +197,7 @@ public class DRPBlock extends Block {
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
 		if(this.explodedBehavior != null)
 			this.explodedBehavior.execute(world, pos, explosion);
 	}
@@ -215,7 +215,7 @@ public class DRPBlock extends Block {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(this.collidedWithBehavior != null)
 			this.collidedWithBehavior.execute(world, pos, state, entity);
 	}

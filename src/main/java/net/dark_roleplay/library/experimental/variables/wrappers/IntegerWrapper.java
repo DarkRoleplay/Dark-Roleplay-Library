@@ -22,7 +22,7 @@ public class IntegerWrapper {
 	}
 
 	public void add(int amount){
-		this.value += amount;
+		this.value = Math.min(Math.max(this.value, this.min), this.max);
 	}
 
 	public void remove(int amount){
@@ -30,7 +30,7 @@ public class IntegerWrapper {
 	}
 
 	public void set(int value){
-		this.value = value;
+		this.value = Math.min(Math.max(value, this.min), this.max);
 		this.markDirty();
 	}
 

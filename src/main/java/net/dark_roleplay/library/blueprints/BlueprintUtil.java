@@ -34,7 +34,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Generates a Blueprint objects from the world
-	 * 
+	 *
 	 * @param world
 	 *            The World that is used for the Blueprint
 	 * @param pos
@@ -53,7 +53,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Generates a Blueprint objects from the world
-	 * 
+	 *
 	 * @param world
 	 *            The World that is used for the Blueprint
 	 * @param pos
@@ -81,18 +81,18 @@ public class BlueprintUtil {
 
 		List<String> requiredMods = new ArrayList<String>();
 
-		
-		
+
+
 		long time = System.currentTimeMillis();
 
 		Iterator<MutableBlockPos> positions = BlockPos.getAllInBoxMutable(pos, pos.add(sizeX - 1, sizeY - 1, sizeZ - 1)).iterator();
 		while(positions.hasNext()) {
 			MutableBlockPos mutablePos = positions.next();
 			IBlockState state = world.getBlockState(mutablePos);
-			String modName = state.getBlock().getRegistryName().getResourceDomain();
+			String modName = state.getBlock().getRegistryName().getNamespace();
 
 			short x = (short) (mutablePos.getX() - pos.getX()), y = (short) (mutablePos.getY() - pos.getY()), z = (short) (mutablePos.getZ() - pos.getZ());
-			
+
 			if(!requiredMods.contains(modName)) {
 				if(Loader.isModLoaded(modName))
 					requiredMods.add(modName);
@@ -100,7 +100,7 @@ public class BlueprintUtil {
 				structure[y][z][x] = (short) pallete.indexOf(Blocks.AIR.getDefaultState());
 				continue;
 			}
-			
+
 			TileEntity te = world.getTileEntity(mutablePos);
 			if (te != null) {
 				NBTTagCompound teTag = te.serializeNBT();
@@ -134,7 +134,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Serializes a given Blueprint to an NBTTagCompound
-	 * 
+	 *
 	 * @param schem
 	 *            The Blueprint to serialize
 	 * @return An NBTTagCompound containing the Blueprint Data
@@ -199,7 +199,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Deserializes a Blueprint form the Given NBTTagCompound
-	 * 
+	 *
 	 * @param tag
 	 *            The NBTTagCompound containing the Blueprint Data
 	 * @return A desserialized Blueprint
@@ -263,7 +263,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Attempts to write a Blueprint to an Output Stream
-	 * 
+	 *
 	 * @param os
 	 *            The Output Stream to write to
 	 * @param schem
@@ -279,7 +279,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Attempts to read a Blueprint from an Input Stream
-	 * 
+	 *
 	 * @param is
 	 *            The Input Stream from which to read the Blueprint
 	 * @return the Blueprting that was read from the InputStream
@@ -297,7 +297,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Converts a 3 Dimensional short Array to a one Dimensional int Array
-	 * 
+	 *
 	 * @param multDimArray
 	 *            3 Dimensional short Array
 	 * @param sizeX
@@ -340,7 +340,7 @@ public class BlueprintUtil {
 
 	/**
 	 * Converts a 1 Dimensional int Array to a 3 Dimensional short Array
-	 * 
+	 *
 	 * @param ints
 	 *            1 Dimensioanl int Array
 	 * @param sizeX

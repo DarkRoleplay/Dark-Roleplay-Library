@@ -49,7 +49,7 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 		if(!(modelLocation instanceof ModelResourceLocation)) return false;
 		if(modelLocation.toString().contains("inventory")) return false;
 
-		String name = modelLocation.getResourceDomain() + ":" + modelLocation.getResourcePath();
+		String name = modelLocation.getNamespace() + ":" + modelLocation.getNamespace();
 
 		if(registryNames.contains(name)) return true;
 		return false;
@@ -60,11 +60,11 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 		if(!(modelLocation instanceof ModelResourceLocation)) throw new Exception("FUCKING ERROR!");
 
 		if(this.isHorizontal(modelLocation)) {
-			String name = modelLocation.getResourceDomain() + ":" + modelLocation.getResourcePath();
+			String name = modelLocation.getNamespace() + ":" + modelLocation.getPath();
 
 			if(bakers.containsKey(name)) return bakers.get(name);
 
-			JsonObject blockState = getBlockState(new ResourceLocation(modelLocation.getResourceDomain(), "blockstates/drp/connected_models/" + modelLocation.getResourcePath() + ".json"));
+			JsonObject blockState = getBlockState(new ResourceLocation(modelLocation.getNamespace(), "blockstates/drp/connected_models/" + modelLocation.getPath() + ".json"));
 
 			if(blockState == null) return null;
 

@@ -23,6 +23,7 @@ public class FloatWrapper {
 
 	public void add(float amount){
 		this.value += amount;
+		this.value = Math.min(Math.max(this.value, this.min), this.max);
 	}
 
 	public void remove(float amount){
@@ -30,7 +31,7 @@ public class FloatWrapper {
 	}
 
 	public void set(float value){
-		this.value = value;
+		this.value = Math.min(Math.max(value, this.min), this.max);
 		this.markDirty();
 	}
 
