@@ -58,6 +58,7 @@ public class BlockSettings {
 		this.blastResistance = blastResistance;
 		this.renderLayer = BlockRenderLayer.SOLID;
 		this.faceShape = BlockFaceShape.SOLID;
+		this.renderType = EnumBlockRenderType.MODEL;
 	}
 
 
