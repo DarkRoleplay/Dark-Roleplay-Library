@@ -49,9 +49,11 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 		if(!(modelLocation instanceof ModelResourceLocation)) return false;
 		if(modelLocation.toString().contains("inventory")) return false;
 
-		String name = modelLocation.getNamespace() + ":" + modelLocation.getNamespace();
+		String name = modelLocation.getNamespace() + ":" + modelLocation.getPath();
 
-		if(registryNames.contains(name)) return true;
+		if(registryNames.contains(name)) {
+			return true;
+		}
 		return false;
 	}
 
