@@ -30,6 +30,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
 public class HorizontalConnectedModelBaker extends DelayedModel{
 
@@ -116,12 +117,15 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 		List<BakedQuad> result = Lists.newArrayList();
 		this.addQuads(result, this.center, rotateY, rotateX, state, side, rand);
 
-		if (state == null)
+		if (state == null || !(state instanceof IExtendedBlockState))
 			return result;
 
-		boolean topLeft = state.getValue(NORTH_LEFT), topCenter = state.getValue(NORTH_CENTER), topRight = state.getValue(NORTH_RIGHT);
-		boolean centerLeft = state.getValue(CENTER_LEFT), centerRight = state.getValue(CENTER_RIGHT);
-		boolean bottomLeft = state.getValue(SOUTH_LEFT), bottomCenter = state.getValue(SOUTH_CENTER), bottomRight = state.getValue(SOUTH_RIGHT);
+
+		IExtendedBlockState extendendState = (IExtendedBlockState) state;
+
+		boolean topLeft = extendendState.getValue(NORTH_LEFT), topCenter = extendendState.getValue(NORTH_CENTER), topRight = extendendState.getValue(NORTH_RIGHT);
+		boolean centerLeft = extendendState.getValue(CENTER_LEFT), centerRight = extendendState.getValue(CENTER_RIGHT);
+		boolean bottomLeft = extendendState.getValue(SOUTH_LEFT), bottomCenter = extendendState.getValue(SOUTH_CENTER), bottomRight = extendendState.getValue(SOUTH_RIGHT);
 
 		if(!centerLeft && !topCenter) this.addQuads(result, this.pack0[0], rotateY, rotateX, state, side, rand);
 		else if(centerLeft && topLeft && topCenter) this.addQuads(result, this.pack1[0], rotateY, rotateX, state, side, rand);

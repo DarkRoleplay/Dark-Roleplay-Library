@@ -23,7 +23,7 @@ public class BlockSettings {
 	private float blastResistance;
 	private float lightLevel = 0F;
 	private int lightOpacity = 0;
-	private float slipperiness = 0F;
+	private float slipperiness = 0.6F;
 	private BlockRenderLayer renderLayer;
 	private BlockFaceShape faceShape;
 	private EnumBlockRenderType renderType;
