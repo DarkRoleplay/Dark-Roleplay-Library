@@ -85,7 +85,6 @@ public class DRPLibrary {
 		@Override
 		public void preInit(FMLPreInitializationEvent event) {
 			ModelLoaderRegistry.registerLoader(new ConnectedModelLoader());
-
 		}
 
 		@Override

@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -40,9 +41,7 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 		if(!(modelLocation instanceof ModelResourceLocation)) return false;
 		if(modelLocation.toString().contains("inventory")) return false;
 
-		String name = modelLocation.getNamespace() + ":" + modelLocation.getPath();
-
-		if(registryNames.contains(name)) {
+		if(registryNames.contains(modelLocation.getNamespace() + ":" + modelLocation.getPath())) {
 			return true;
 		}
 		return false;
@@ -70,15 +69,21 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 
 			ImmutableMap.Builder<String, String> builder = ImmutableMap.<String, String>builder();
 
+			ImmutableList.Builder<ResourceLocation> texBuilder = ImmutableList.builder();
+			texBuilder.add(new ResourceLocation(textures.get("particle").getAsString()));
+
 			for(Map.Entry<String, JsonElement> entry : textures.entrySet()) {
 				builder.put(entry.getKey(), entry.getValue().getAsString());
+				texBuilder.add(new ResourceLocation(entry.getValue().getAsString()));
 			}
 
 			ImmutableMap<String, String> textureRemap = builder.build();
 
 			IModel center = getModel(pack0.get("center").getAsString()).retexture(textureRemap);
 
-			DelayedModel baker = new HorizontalConnectedModelBaker(new ResourceLocation(textures.get("particle").getAsString()), center, new IModel[] {
+			ImmutableList<ResourceLocation> textures2 = texBuilder.build();
+
+			HorizontalConnectedModelBaker baker = new HorizontalConnectedModelBaker(textures2, center, new IModel[] {
 					getModel(pack0.get("top_left").getAsString()).retexture(textureRemap),
 					getModel(pack0.get("top_center").getAsString()).retexture(textureRemap),
 					getModel(pack0.get("top_right").getAsString()).retexture(textureRemap),
@@ -118,12 +123,14 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 			return baker;
 		}
 
+
+		System.out.println("NULLING SEARCH ME");
 		return null;
 	}
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {
-		bakers = new HashMap<String, DelayedModel>();
+		bakers.clear();
 	}
 
 	private boolean isHorizontal(ResourceLocation modelLocation) {

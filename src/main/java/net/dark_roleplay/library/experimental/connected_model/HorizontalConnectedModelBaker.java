@@ -13,10 +13,14 @@ import static net.dark_roleplay.library.experimental.connected_model.ConnectedMo
 import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.SOUTH_LEFT;
 import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.SOUTH_RIGHT;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -31,10 +35,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class HorizontalConnectedModelBaker extends DelayedModel{
 
-	protected static final Map<IExtendedBlockState, List<BakedQuad>> CACHE = Maps.newHashMap();
+	protected static final Map<String, List<BakedQuad>> CACHE = Maps.newHashMap();
+
+	protected ImmutableList<ResourceLocation> textures;
 
 	protected IModel center;
 	protected IModel[] pack0;
@@ -43,29 +50,58 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 	protected IModel[] pack3;
 	protected IModel[] pack4;
 
-	public HorizontalConnectedModelBaker(ResourceLocation particle, IModel center, IModel[] pack0, IModel[] pack1, IModel[] pack2, IModel[] pack3, IModel[] pack4) {
+	public HorizontalConnectedModelBaker(ImmutableList<ResourceLocation> textures, IModel center, IModel[] pack0, IModel[] pack1, IModel[] pack2, IModel[] pack3, IModel[] pack4) {
 		this.center = center;
 		this.pack0 = pack0;
 		this.pack1 = pack1;
 		this.pack2 = pack2;
 		this.pack3 = pack3;
 		this.pack4 = pack4;
-		this.particle = particle.toString();
+		this.particle = textures.get(0).toString();
+
+		this.textures = textures;
+
+	}
+
+	private static String convertExtendedToString(IExtendedBlockState state) {
+		StringBuilder b = new StringBuilder();
+
+		b.append(state.toString());
+
+		b.append("[");
+
+		ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
+		boolean setComma = false;
+		for(IUnlistedProperty<?> prop : properties.keySet()) {
+			Optional<?> value = properties.get(prop);
+			if(value.isPresent()) {
+				if(setComma) b.append(",");
+				b.append(prop.getName());
+				b.append("=");
+				b.append(value.get());
+			}
+			setComma = true;
+		}
+
+		b.append("]");
+
+		return b.toString();
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(IBlockState stateA, EnumFacing side, long rand) {
 		side = null;
-		List<BakedQuad> result = Lists.newArrayList();
 
-		for(int i = 0; i < 100; i++)
-			System.out.println("GET QUAAAADS");
+		List<BakedQuad> result = Lists.newArrayList();
 
 		if(!(stateA instanceof IExtendedBlockState)) return result;
 		IExtendedBlockState state = (IExtendedBlockState) stateA;
 
-		if (CACHE.containsKey(state))
-			return CACHE.get(state);
+		//Improving performance
+		//Magic trick suggested by Kanno, lets hope it works
+
+		if (CACHE.containsKey(convertExtendedToString(state)))
+			return CACHE.get(convertExtendedToString(state));
 
 		int rotateX = 0;
 		int rotateY = 0;
@@ -73,14 +109,14 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 		EnumFacing facing = null;
 		EnumFacing.Axis axis = null;
 
-		if(state.getProperties().containsKey(FACING_HORIZONTAL.getName())) {
-			facing = (EnumFacing) state.getValue(FACING_HORIZONTAL);
-		}else if(state.getProperties().containsKey(FACING.getName())) {
-			facing = (EnumFacing) state.getValue(FACING);
-		}else if(state.getProperties().containsKey(AXIS_HORIZONTAL.getName())) {
-			axis = (EnumFacing.Axis) state.getValue(AXIS_HORIZONTAL);
-		}else if(state.getProperties().containsKey(AXIS.getName())) {
-			axis = (EnumFacing.Axis) state.getValue(AXIS);
+		if(stateA.getProperties().containsKey(FACING_HORIZONTAL)) {
+			facing = (EnumFacing) stateA.getValue(FACING_HORIZONTAL);
+		}else if(stateA.getProperties().containsKey(FACING)) {
+			facing = (EnumFacing) stateA.getValue(FACING);
+		}else if(stateA.getProperties().containsKey(AXIS_HORIZONTAL)) {
+			axis = (EnumFacing.Axis) stateA.getValue(AXIS_HORIZONTAL);
+		}else if(stateA.getProperties().containsKey(AXIS)) {
+			axis = (EnumFacing.Axis) stateA.getValue(AXIS);
 		}
 
 		if(facing != null) {
@@ -162,13 +198,18 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 		if(!centerRight) this.addQuads(result, this.pack0[7], rotateY, rotateX, state, side, rand);
 		else if(centerRight) this.addQuads(result, this.pack1[7], rotateY, rotateX, state, side, rand);
 
-		CACHE.put(state, result);
+		CACHE.put(convertExtendedToString(state), result);
 		return result;
 	}
 
 	@Override
+	public Collection<ResourceLocation> getTextures() {
+		return this.textures;
+	}
+
+	@Override
 	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-		this.bakeInfo(format, bakedTextureGetter, new ResourceLocation(this.particle));
+		this.bakeInfo(format, bakedTextureGetter, new ResourceLocation("drpmedieval", "blocks/clean_plank_spruce")); //this.particle));
 		return this;
 	}
 }
