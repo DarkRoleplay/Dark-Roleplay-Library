@@ -1,14 +1,5 @@
 package net.dark_roleplay.library.experimental.connected_model;
 
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.CENTER_LEFT;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.CENTER_RIGHT;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.NORTH_CENTER;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.NORTH_LEFT;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.NORTH_RIGHT;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.SOUTH_CENTER;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.SOUTH_LEFT;
-import static net.dark_roleplay.library.experimental.connected_model.ConnectedModelBlockStates.SOUTH_RIGHT;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -59,7 +50,7 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 
 	@Override
 	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-		if(!(modelLocation instanceof ModelResourceLocation)) throw new Exception("FUCKING ERROR!");
+		if(!(modelLocation instanceof ModelResourceLocation)) throw new Exception("If you see this, pls kill me :sob:");
 
 		if(this.isHorizontal(modelLocation)) {
 			String name = modelLocation.getNamespace() + ":" + modelLocation.getPath();
@@ -136,11 +127,13 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 	}
 
 	private boolean isHorizontal(ResourceLocation modelLocation) {
-		String variants = ((ModelResourceLocation)modelLocation).getVariant();
+//		String variants = ((ModelResourceLocation)modelLocation).getVariant();
 
-		return variants.contains(NORTH_LEFT.getName()) && variants.contains(NORTH_CENTER.getName()) && variants.contains(NORTH_RIGHT.getName()) &&
-				 variants.contains(SOUTH_LEFT.getName()) && variants.contains(SOUTH_CENTER.getName()) && variants.contains(SOUTH_RIGHT.getName()) &&
-				 variants.contains(CENTER_LEFT.getName()) && variants.contains(CENTER_RIGHT.getName());
+		return true;
+
+//		return variants.contains(NORTH_LEFT.getName()) && variants.contains(NORTH_CENTER.getName()) && variants.contains(NORTH_RIGHT.getName()) &&
+//				 variants.contains(SOUTH_LEFT.getName()) && variants.contains(SOUTH_CENTER.getName()) && variants.contains(SOUTH_RIGHT.getName()) &&
+//				 variants.contains(CENTER_LEFT.getName()) && variants.contains(CENTER_RIGHT.getName());
 	}
 
 	protected static Gson gson = new GsonBuilder().setPrettyPrinting().create();

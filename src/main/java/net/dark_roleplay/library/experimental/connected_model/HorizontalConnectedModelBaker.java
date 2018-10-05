@@ -34,7 +34,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 
 public class HorizontalConnectedModelBaker extends DelayedModel{
 
-	protected static final Map<IBlockState, List<BakedQuad>> CACHE = Maps.newHashMap();
+	protected static final Map<IExtendedBlockState, List<BakedQuad>> CACHE = Maps.newHashMap();
 
 	protected IModel center;
 	protected IModel[] pack0;
@@ -54,8 +54,16 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(IBlockState stateA, EnumFacing side, long rand) {
 		side = null;
+		List<BakedQuad> result = Lists.newArrayList();
+
+		for(int i = 0; i < 100; i++)
+			System.out.println("GET QUAAAADS");
+
+		if(!(stateA instanceof IExtendedBlockState)) return result;
+		IExtendedBlockState state = (IExtendedBlockState) stateA;
+
 		if (CACHE.containsKey(state))
 			return CACHE.get(state);
 
@@ -112,20 +120,11 @@ public class HorizontalConnectedModelBaker extends DelayedModel{
 			}
 		}
 
-
-
-		List<BakedQuad> result = Lists.newArrayList();
 		this.addQuads(result, this.center, rotateY, rotateX, state, side, rand);
 
-		if (state == null || !(state instanceof IExtendedBlockState))
-			return result;
-
-
-		IExtendedBlockState extendendState = (IExtendedBlockState) state;
-
-		boolean topLeft = extendendState.getValue(NORTH_LEFT), topCenter = extendendState.getValue(NORTH_CENTER), topRight = extendendState.getValue(NORTH_RIGHT);
-		boolean centerLeft = extendendState.getValue(CENTER_LEFT), centerRight = extendendState.getValue(CENTER_RIGHT);
-		boolean bottomLeft = extendendState.getValue(SOUTH_LEFT), bottomCenter = extendendState.getValue(SOUTH_CENTER), bottomRight = extendendState.getValue(SOUTH_RIGHT);
+		boolean topLeft = state.getValue(NORTH_LEFT), topCenter = state.getValue(NORTH_CENTER), topRight = state.getValue(NORTH_RIGHT);
+		boolean centerLeft = state.getValue(CENTER_LEFT), centerRight = state.getValue(CENTER_RIGHT);
+		boolean bottomLeft = state.getValue(SOUTH_LEFT), bottomCenter = state.getValue(SOUTH_CENTER), bottomRight = state.getValue(SOUTH_RIGHT);
 
 		if(!centerLeft && !topCenter) this.addQuads(result, this.pack0[0], rotateY, rotateX, state, side, rand);
 		else if(centerLeft && topLeft && topCenter) this.addQuads(result, this.pack1[0], rotateY, rotateX, state, side, rand);
