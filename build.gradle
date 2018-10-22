@@ -8,8 +8,9 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven-publish'
 
-version = "1.12.2-0.1.2.3-pre"
+version = "1.12.2-0.1.2.4-SNAPSHOT"
 group = "net.dark_roleplay"
 archivesBaseName = "drplibrary"
 
@@ -108,5 +109,27 @@ jar{
 			'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}",
 			'Timestamp': System.currentTimeMillis()
 		])
+	}
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+			from components.java
+            groupId = project.group
+            artifactId = project.archivesBaseName
+            version = project.version
+        }
+    }
+	
+			
+	repositories {
+		maven{
+			url = project.mvn_url
+			credentials {
+				username project.mvn_username_drp
+				password project.mvn_password_drp
+			}
+		}
 	}
 }
