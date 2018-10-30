@@ -23,28 +23,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
 /**
- * Created: 26.05.2018
- * Last edit: 26.05.2018
- * Last edit by: JTK222
- * Version added: 0.1.0
+ * @since 0.1.0
  * State: not completed
- * Note: You can find the Blueprint specification here: {@link http://dark-roleplay.net/other/blueprint_format.php}
+ * @see <a href="http://dark-roleplay.net/other/blueprint_format.php">Blueprint V1 Specification</a>
  */
 public class BlueprintUtil {
 
 	/**
 	 * Generates a Blueprint objects from the world
 	 *
-	 * @param world
-	 *            The World that is used for the Blueprint
-	 * @param pos
-	 *            The Position of the Blueprint
-	 * @param sizeX
-	 *            The Size on the X-Axis
-	 * @param sizeY
-	 *            The Size on the Y-Axis
-	 * @param sizeZ
-	 *            The Size on the Z-Axis
+	 * @param world The World that is used for the Blueprint
+	 * @param pos The Position of the Blueprint
+	 * @param sizeX The Size on the X-Axis
+	 * @param sizeY The Size on the Y-Axis
+	 * @param sizeZ The Size on the Z-Axis
 	 * @return the generated Blueprint
 	 */
 	public static Blueprint createBlueprint(World world, BlockPos pos, short sizeX, short sizeY, short sizeZ) {

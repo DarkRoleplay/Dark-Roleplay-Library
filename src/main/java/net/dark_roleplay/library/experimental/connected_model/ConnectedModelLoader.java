@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -25,6 +26,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.resource.IResourceType;
+import net.minecraftforge.client.resource.VanillaResourceType;
 
 public class ConnectedModelLoader implements ICustomModelLoader{
 
@@ -132,6 +135,13 @@ public class ConnectedModelLoader implements ICustomModelLoader{
 	public void onResourceManagerReload(IResourceManager resourceManager) {
 		bakers.clear();
 	}
+
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate){
+        if (resourcePredicate.test(VanillaResourceType.MODELS)) {
+    		bakers.clear();
+        }
+    }
 
 	private boolean isHorizontal(ResourceLocation modelLocation) {
 //		String variants = ((ModelResourceLocation)modelLocation).getVariant();
