@@ -105,13 +105,18 @@ jar{
 
 	manifest {
 		attributes([
-            'ContainedDeps': configurations.embed.collect { it.getName() }.join(' '),
 			'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}",
 			'Timestamp': System.currentTimeMillis()
 		])
 	}
 }
 
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+tasks.publish.dependsOn reobfJar
 publishing {
     publications {
         maven(MavenPublication) {
@@ -119,6 +124,10 @@ publishing {
             groupId = project.group
             artifactId = project.archivesBaseName
             version = project.version
+			
+			
+            artifact sourceJar
+            artifact javadocJar
         }
     }
 	

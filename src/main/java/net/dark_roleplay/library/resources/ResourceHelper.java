@@ -27,8 +27,8 @@ import net.minecraftforge.fml.common.ModContainer;
 public class ResourceHelper {
 
 	/**
+	 * Copy of {@link net.minecraftforge.common.crafting.CraftingHelper}<br>
 	 * TODO replace with propper system once 1.13 is released
-	 * @link{Copied out of net.minecraftforge.common.craftingCraftingHelper.class}
 	 * @param mod
 	 * @param base
 	 * @param preprocessor
