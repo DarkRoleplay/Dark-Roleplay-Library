@@ -1,6 +1,5 @@
-package net.dark_roleplay.library.experimental.blueprints.v2.loaders;
+package net.dark_roleplay.library.experimental.blueprints.v2.header;
 
-import net.dark_roleplay.library.experimental.blueprints.v2.BlueprintHeader;
 import net.dark_roleplay.library.experimental.blueprints.v2.exception.DataCorruptedException;
 import net.dark_roleplay.library.experimental.blueprints.v2.exception.UnsupportedVersionException;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +38,7 @@ public final class LoaderBlueprintHeader {
 		public static final String KEY_NAME = "Name";
 		public static final String KEY_SIZE = "Size";
 		public static final String KEY_CREDITS = "Credits";
+		public static final String KEY_DESC = "Description";
 		public static final String KEY_MODS = "RequiredMods";
 		public static final String KEY_LAYERS = "LayerFiles";
 		public static final String KEY_CUSTOM = "Custom";
@@ -56,6 +56,8 @@ public final class LoaderBlueprintHeader {
 
 			//Optional
 			header.setName(compound.getString(KEY_NAME));
+
+			header.setDescription(compound.getString(KEY_DESC));
 
 			NBTTagList credits = compound.getTagList(KEY_CREDITS, NBT.TAG_STRING);
 			for(int i = 0; i < credits.tagCount(); i++) header.addCredits(credits.getStringTagAt(i));

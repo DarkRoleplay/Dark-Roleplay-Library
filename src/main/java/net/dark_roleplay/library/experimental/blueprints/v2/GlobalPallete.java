@@ -1,7 +1,7 @@
 package net.dark_roleplay.library.experimental.blueprints.v2;
 
 import net.dark_roleplay.library.experimental.blueprints.v2.exception.DataCorruptedException;
-import net.dark_roleplay.library.experimental.blueprints.v2.exception.VersionNotSupportedException;
+import net.dark_roleplay.library.experimental.blueprints.v2.exception.UnsupportedVersionException;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,8 +31,8 @@ public class GlobalPallete {
 		return compound;
 	}
 
-	public static GlobalPallete readFromNBT(NBTTagCompound compound) throws VersionNotSupportedException, DataCorruptedException{
-		if(!compound.hasKey("Version")) throw new VersionNotSupportedException("No version data found");
+	public static GlobalPallete readFromNBT(NBTTagCompound compound) throws UnsupportedVersionException, DataCorruptedException{
+		if(!compound.hasKey("Version")) throw new UnsupportedVersionException("No version data found");
 
 		int version = compound.getInteger("Version");
 		switch(version) {
@@ -49,7 +49,7 @@ public class GlobalPallete {
 				return new GlobalPallete(states);
 			}
 			default:
-				 throw new VersionNotSupportedException(String.format("Version '%d' is not supported", version));
+				 throw new UnsupportedVersionException(String.format("Version '%d' is not supported", version));
 		}
 	}
 }

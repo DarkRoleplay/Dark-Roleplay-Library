@@ -1,4 +1,4 @@
-package net.dark_roleplay.library.experimental.blueprints.v2;
+package net.dark_roleplay.library.experimental.blueprints.v2.header;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +19,7 @@ public class BlueprintHeader {
 	private BlockPos size = new BlockPos(5, 5, 5);
 	private Set<String> requiredMods = new HashSet<String>();
 	private Set<String> layerFiles = new HashSet<String>();
+	private String description = "";
 	private NBTTagCompound customData = new NBTTagCompound();
 
 
@@ -50,6 +51,22 @@ public class BlueprintHeader {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	/**
+	 * @return The description of this Blueprint
+	 */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * Sets the description of this Blueprint
+	 * @param description The new name
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
