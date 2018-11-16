@@ -8,7 +8,6 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'maven-publish'
 
 version = "1.12.2-0.1.2.4-SNAPSHOT"
 group = "net.dark_roleplay"
@@ -19,45 +18,8 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
-minecraft {
-    version = "1.12.2-14.23.4.2765"
-    runDir = "run"
-    
-	if (project.hasProperty('mappings_112')) {
-		mappings = project.findProperty('mappings_112')
-	} else{
-		mappings = "snapshot_20180814"
-	}
-	
-	if (project.hasProperty('mc_username')) {
-		clientRunArgs += ['--username', project.findProperty('mc_username')]
-		if (project.hasProperty('mc_password')) {
-			clientRunArgs += ['--password', project.findProperty('mc_password')]
-		}
-	}
-	if (project.hasProperty('mc_uuid')) {
-		clientRunArgs += ['--uuid', project.findProperty('mc_uuid')]
-	}
-
-	// disable server gui
-	serverRunArgs += 'nogui'
-
-	// skip the screen to confirm that you want to load a world with missing registry entries
-	serverJvmArgs += '-Dfml.doNotBackup=true'
-	clientJvmArgs += '-Dfml.doNotBackup=true'
-
-	// skip having to confirm on server
-	serverJvmArgs += '-Dfml.queryResult=confirm'
-
-	//skip jansi warnings in the log
-	serverJvmArgs += '-Dlog4j.skipJansi=true'
-	clientJvmArgs += '-Dlog4j.skipJansi=true'
-}
-
-configurations {
-    embed
-    compile.extendsFrom(embed)
-}
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/minecraft.gradle'
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/configurations.gradle'
 
 repositories {
 	maven {
@@ -68,77 +30,7 @@ repositories {
 
 dependencies {}
 
-processResources {
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-//Signing the Jar
-task signJar(type: SignJar, dependsOn: reobfJar) {
-
-	if(project.hasProperty('keyStore')){
-		keyStore = project.findProperty('keyStore')
-		alias = project.findProperty('keyStoreAlias')
-		storePass = project.findProperty('keyStorePass')
-		keyPass = project.findProperty('keyStoreKeyPass')
-		
-		inputFile = jar.archivePath
-		outputFile = jar.archivePath
-	}
-}
-build.dependsOn signJar
-
-jar{
-	into('META-INF/libraries'){
-		from configurations.embed
-	}
-
-	manifest {
-		attributes([
-			'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}",
-			'Timestamp': System.currentTimeMillis()
-		])
-	}
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-tasks.publish.dependsOn reobfJar
-publishing {
-    publications {
-        maven(MavenPublication) {
-			from components.java
-            groupId = project.group
-            artifactId = project.archivesBaseName
-            version = project.version
-			
-			
-            artifact sourceJar
-            artifact javadocJar
-        }
-    }
-	
-			
-	repositories {
-		maven{
-			url = project.mvn_url
-			credentials {
-				username project.mvn_username_drp
-				password project.mvn_password_drp
-			}
-		}
-	}
-}
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/mcmod_info.gradle'
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/signing.gradle'
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/publishing.gradle'
+apply from: 'https://dark-roleplay.net/files/gradle_helpers/1.12.2/mod_maven.gradle'
