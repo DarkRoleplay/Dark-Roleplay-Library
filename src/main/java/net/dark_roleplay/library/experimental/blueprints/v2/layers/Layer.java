@@ -18,4 +18,51 @@ public class Layer {
 	private NBTTagList tileEntities = new NBTTagList();
 
 	private NBTTagCompound custom = new NBTTagCompound();
+
+	public Layer(IPallete pallete, BlockPos size, BlockPos origin, int[][][] data) {
+		this.pallete = pallete;
+		this.size = size;
+		this.origin = origin;
+		this.data = data;
+	}
+
+	public void setEntitiesTag(NBTTagList entities) {
+		this.entities = entities;
+	}
+
+	public void setTileEntitesTag(NBTTagList tileEntities) {
+		this.tileEntities = tileEntities;
+	}
+
+	public void setCustom(NBTTagCompound custom) {
+		this.custom = custom;
+	}
+
+	public IPallete getPallete() {
+		return this.pallete;
+	}
+
+	public BlockPos getSize() {
+		return this.size;
+	}
+
+	public BlockPos getOrigin() {
+		return this.origin;
+	}
+
+	public int[][][] getData() {
+		return this.data;
+	}
+
+	public NBTTagList getEntities() {
+		return this.entities;
+	}
+
+	public NBTTagList getTileEntities() {
+		return this.tileEntities;
+	}
+
+	public NBTTagCompound getCustom() {
+		return this.custom;
+	}
 }

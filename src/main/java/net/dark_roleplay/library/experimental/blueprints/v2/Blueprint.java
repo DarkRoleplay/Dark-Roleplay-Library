@@ -6,7 +6,7 @@ import net.dark_roleplay.library.experimental.blueprints.v2.header.BlueprintHead
 
 public class Blueprint {
 
-	private LoadingState loadingState = LoadingState.NONE;
+	private Constants.LoadingState loadingState = Constants.LoadingState.NONE;
 
 	private BlueprintHeader header = null;
 	private BufferedImage previewImage = null;
@@ -18,7 +18,7 @@ public class Blueprint {
 	}
 
 	public Blueprint(BlueprintHeader header, BufferedImage image) {
-		this.loadingState = LoadingState.HEADER;
+		this.loadingState = Constants.LoadingState.HEADER;
 		this.header = header;
 		this.previewImage = image;
 	}
@@ -27,13 +27,7 @@ public class Blueprint {
 		return this.header;
 	}
 
-	public LoadingState getLoadingState() {
+	public Constants.LoadingState getLoadingState() {
 		return this.loadingState;
-	}
-
-	public static enum LoadingState{
-		NONE,
-		HEADER,
-		FULL
 	}
 }

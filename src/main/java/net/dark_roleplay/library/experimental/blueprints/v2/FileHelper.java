@@ -14,8 +14,10 @@ import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 
@@ -85,6 +87,48 @@ public class FileHelper {
 			}
 
 			return new Blueprint(header);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnsupportedVersionException e) {
+			e.printStackTrace();
+		}
+		return new Blueprint();
+	}
+
+	public static Blueprint loadBlueprint(File file, boolean loadPreviewImage, String... customNBTFiles) {
+		URI p = file.toURI();
+		URI uri = URI.create("jar:" + p);
+
+		BlueprintHeader header = null;
+		BufferedImage previewImage = null;
+		Map<String, NBTTagCompound> customFiles = new HashMap<String, NBTTagCompound>();
+
+
+		Map<String, String> env = new HashMap<>();
+		env.put("create", "true");
+		try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
+			InputStream headerInput = new BufferedInputStream(Files.newInputStream(new File(HEADER_NAME).toPath()));
+
+			//Load Header
+			NBTTagCompound headerComp = CompressedStreamTools.readCompressed(headerInput);
+			header = LoaderBlueprintHeader.loadBlueprintHeader(headerComp);
+
+			//Load Preview Image
+			if (loadPreviewImage && Files.exists(new File(PREVIEW_NAME).toPath())) {
+				previewImage = ImageIO.read(Files.newInputStream(new File(PREVIEW_NAME).toPath()));
+			}
+
+			Stream<Path> layerFiles = Files.list(new File(LAYERS_NAME).toPath());
+			layerFiles.forEach(path -> {
+				//TODO Load layers
+			});
+
+			//Load customNBTFiles
+			for(String customNBTFile : customNBTFiles) {
+				InputStream customNBTStream = new BufferedInputStream(Files.newInputStream(new File(CUSTOM_NAME + "/" + customNBTFile + ".nbt").toPath()));
+				NBTTagCompound customComp = CompressedStreamTools.readCompressed(customNBTStream);
+				customFiles.put(customNBTFile, customComp);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (UnsupportedVersionException e) {
