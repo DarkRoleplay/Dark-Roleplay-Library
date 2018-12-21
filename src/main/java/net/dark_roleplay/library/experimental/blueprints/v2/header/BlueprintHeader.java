@@ -146,4 +146,8 @@ public class BlueprintHeader {
 	public void addCustomData(String key, NBTTagCompound comp) {
 		this.customData.setTag(key, comp);
 	}
+
+	public NBTTagCompound getAllCustomData() {
+		return this.customData;
+	}
 }

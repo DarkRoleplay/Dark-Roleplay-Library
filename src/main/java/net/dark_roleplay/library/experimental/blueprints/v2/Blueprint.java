@@ -1,74 +1,39 @@
 package net.dark_roleplay.library.experimental.blueprints.v2;
 
-import java.util.zip.ZipFile;
+import java.awt.image.BufferedImage;
 
-import net.dark_roleplay.library.experimental.blueprints.v2.loaders.LoaderV2;
-import net.dark_roleplay.library.experimental.zip_helper.ZipNBTHelper;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
+import net.dark_roleplay.library.experimental.blueprints.v2.header.BlueprintHeader;
 
 public class Blueprint {
 
-	public static final String VERSION_KEY = "Version";
+	private LoadingState loadingState = LoadingState.NONE;
 
-	private String name = "unnamed";
-	private BlockPos size = new BlockPos(1, 1, 1);
-	private String[] requiredMods = new String[0];
-	private String[] credits = new String[0];
+	private BlueprintHeader header = null;
+	private BufferedImage previewImage = null;
 
-	private Blueprint() {}
+	public Blueprint() {}
 
-	public static Blueprint loadBlueprint(ZipFile file) {
-		NBTTagCompound compound = ZipNBTHelper.getTagFromZip(file, "blueprint.nbt");
-		if(compound == null) return null;
-
-		Blueprint blueprint = new Blueprint();
-
-		if(!compound.hasKey(VERSION_KEY)) return null;
-
-		switch(compound.getByte(VERSION_KEY)) {
-		case 1:
-			//TODO reimplement v1 Loader
-			break;
-		case 2:
-			blueprint = LoaderV2.loadBlueprint(file, compound, blueprint);
-			break;
-		default:
-			break;
-		}
-
-		return blueprint;
+	public Blueprint(BlueprintHeader header) {
+		this(header, null);
 	}
 
-	public String getName() {
-		return this.name;
+	public Blueprint(BlueprintHeader header, BufferedImage image) {
+		this.loadingState = LoadingState.HEADER;
+		this.header = header;
+		this.previewImage = image;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public BlueprintHeader getHeader() {
+		return this.header;
 	}
 
-	public BlockPos getSize() {
-		return this.size;
+	public LoadingState getLoadingState() {
+		return this.loadingState;
 	}
 
-	public void setSize(BlockPos size) {
-		this.size = size;
-	}
-
-	public String[] getRequiredMods() {
-		return this.requiredMods;
-	}
-
-	public void setRequiredMods(String[] requiredMods) {
-		this.requiredMods = requiredMods;
-	}
-
-	public String[] getCredits() {
-		return this.credits;
-	}
-
-	public void setCredits(String[] credits) {
-		this.credits = credits;
+	public static enum LoadingState{
+		NONE,
+		HEADER,
+		FULL
 	}
 }

@@ -23,7 +23,7 @@ public final class LoaderBlueprintHeader {
 	 * @throws UnsupportedVersionException when the contained Version in the NBTTagCompound isn't supported by the Loader
 	 */
 	public static BlueprintHeader loadBlueprintHeader(NBTTagCompound compound) throws UnsupportedVersionException{
-		if(compound.hasKey(LoaderV2.KEY_VERSION)) {
+		if(compound.hasKey(LoaderV2.KEY_VERSION) && compound.getInteger(LoaderV2.KEY_VERSION) == 2) {
 			return LoaderV2.loadBlueprintHeader(compound);
 		}else if(compound.hasKey(LoaderV1.KEY_VERSION)) {
 			return LoaderV1.loadBlueprintHeader(compound);
@@ -51,7 +51,7 @@ public final class LoaderBlueprintHeader {
 
 			header.setSize(NBTUtil.getPosFromTag(compound.getCompoundTag(KEY_SIZE)));
 
-			NBTTagList requiredMods = compound.getTagList(KEY_CREDITS, NBT.TAG_STRING);
+			NBTTagList requiredMods = compound.getTagList(KEY_MODS, NBT.TAG_STRING);
 			for(int i = 0; i < requiredMods.tagCount(); i++) header.addRequiredMod(requiredMods.getStringTagAt(i));
 
 			//Optional
