@@ -11,13 +11,9 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-
 /**
- * Created: 26.05.2018
- * Last edit: 26.05.2018
- * Last edit by: JTK222
- * Version added: 0.1.0
- * State: not completed
+ * Created: 26.05.2018 Last edit: 26.05.2018 Last edit by: JTK222 Version added:
+ * 0.1.0 State: not completed
  */
 public class Blueprint {
 
@@ -31,7 +27,7 @@ public class Blueprint {
 
 	private short[][][] structure;
 	private NBTTagCompound[] tileEntities;
-	private NBTTagCompound[] entities;
+    private NBTTagCompound[] entities;
 
 	protected Blueprint(short sizeX, short sizeY, short sizeZ, short palleteSize, IBlockState[] pallete,
 			short[][][] structure, NBTTagCompound[] tileEntities, List<String> requiredMods) {
@@ -50,7 +46,7 @@ public class Blueprint {
 	 *         mirroring)
 	 */
 	public short getSizeX() {
-		return sizeX;
+		return this.sizeX;
 	}
 
 	/**
@@ -58,7 +54,7 @@ public class Blueprint {
 	 *         mirroring)
 	 */
 	public short getSizeY() {
-		return sizeY;
+		return this.sizeY;
 	}
 
 	/**
@@ -66,28 +62,28 @@ public class Blueprint {
 	 *         mirroring)
 	 */
 	public short getSizeZ() {
-		return sizeZ;
+		return this.sizeZ;
 	}
 
 	/**
 	 * @return the amount of Blockstates within the pallete
 	 */
 	public short getPalleteSize() {
-		return palleteSize;
+		return this.palleteSize;
 	}
 
 	/**
 	 * @return the pallete (without rotation and/or mirroring)
 	 */
 	public IBlockState[] getPallete() {
-		return pallete;
+		return this.pallete;
 	}
 
 	/**
 	 * @return the structure (without rotation and/or mirroring)
 	 */
 	public short[][][] getStructure() {
-		return structure;
+		return this.structure;
 	}
 
 	/**
@@ -95,26 +91,26 @@ public class Blueprint {
 	 *         been localized to coordinates within the structure)
 	 */
 	public NBTTagCompound[] getTileEntities() {
-		return tileEntities;
+		return this.tileEntities;
 	}
 
 	/**
 	 * @return a list of all required mods as modid's
 	 */
 	public List<String> getRequiredMods() {
-		return requiredMods;
+		return this.requiredMods;
 	}
 
 	/**
 	 * @return the Name of the Structure
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * Sets the name of the Structure
-	 * 
+	 *
 	 * @param name
 	 */
 	public Blueprint setName(String name) {
@@ -126,12 +122,12 @@ public class Blueprint {
 	 * @return an Array of all architects for this structure
 	 */
 	public String[] getArchitects() {
-		return architects;
+		return this.architects;
 	}
 
 	/**
 	 * Sets an Array of all architects for this structure
-	 * 
+	 *
 	 * @param architects
 	 */
 	public Blueprint setArchitects(String[] architects) {
@@ -149,7 +145,7 @@ public class Blueprint {
 
 	/**
 	 * Sets the missing mods
-	 * 
+	 *
 	 * @param missingMods
 	 */
 	public Blueprint setMissingMods(String... missingMods) {
@@ -158,59 +154,76 @@ public class Blueprint {
 	}
 
 	/**
+	 * @return an array of serialized TileEntities (the Pos tag has been localized
+	 *         to coordinates within the structure)
+	 */
+	public NBTTagCompound[] getEntities() {
+		return this.entities;
+	}
+
+	/**
+	 * @param entities
+	 *                     an array of serialized TileEntities (the Pos tag need to
+	 *                     be localized to coordinates within the structure)
+	 */
+	public void setEntities(NBTTagCompound[] entities) {
+		this.entities = entities;
+	}
+
+	/**
 	 * Checks if no Blocks are overlapping with the structure
-	 * 
+	 *
 	 * @param world
-	 *            The World in which to check
+	 *                   The World in which to check
 	 * @param pos
-	 *            The Position at which to check
+	 *                   The Position at which to check
 	 * @param mirror
-	 *            The Mirroring to Use
+	 *                   The Mirroring to Use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Mirror mirror) {
-		return canBuild(world, pos, Rotation.NONE, mirror);
+		return this.canBuild(world, pos, Rotation.NONE, mirror);
 	}
 
 	/**
 	 * Checks if no Blocks are overlapping with the structure
-	 * 
+	 *
 	 * @param world
-	 *            The World in which to check
+	 *                  The World in which to check
 	 * @param pos
-	 *            The Position at which to check
+	 *                  The Position at which to check
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos) {
-		return canBuild(world, pos, Rotation.NONE, Mirror.NONE);
+		return this.canBuild(world, pos, Rotation.NONE, Mirror.NONE);
 	}
 
 	/**
 	 * Checks if no Blocks are overlapping with the structure
-	 * 
+	 *
 	 * @param world
-	 *            The World in which to check
+	 *                     The World in which to check
 	 * @param pos
-	 *            The Position at which to check
+	 *                     The Position at which to check
 	 * @param rotation
-	 *            The Rotation to use
+	 *                     The Rotation to use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Rotation rotation) {
-		return canBuild(world, pos, rotation, Mirror.NONE);
+		return this.canBuild(world, pos, rotation, Mirror.NONE);
 	}
 
 	/**
 	 * Checks if no Blocks are overlapping with the structure
-	 * 
+	 *
 	 * @param world
-	 *            The World in which to check
+	 *                     The World in which to check
 	 * @param pos
-	 *            The Position at which to check
+	 *                     The Position at which to check
 	 * @param rotation
-	 *            The Rotation to use
+	 *                     The Rotation to use
 	 * @param mirror
-	 *            The Mirroring to Use
+	 *                     The Mirroring to Use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
@@ -233,22 +246,23 @@ public class Blueprint {
 
 	/**
 	 * Used to generate a Blueprint with Rotation and Mirroring
-	 * 
+	 *
 	 * @param world
-	 *            The world to generate the structure
+	 *                     The world to generate the structure
 	 * @param pos
-	 *            The Position to build the structure
+	 *                     The Position to build the structure
 	 * @param rotation
-	 *            The Rotation with which the structure should be generated
+	 *                     The Rotation with which the structure should be generated
 	 * @param mirror
-	 *            The Mirroring with which the structure should be generated
+	 *                     The Mirroring with which the structure should be
+	 *                     generated
 	 */
 	public void build(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
 		IBlockState[] pallete = new IBlockState[this.pallete.length];
 		for (int i = 0; i < pallete.length; i++) {
 			pallete[i] = this.pallete[i].withRotation(rotation).withMirror(mirror);
 		}
-		build(world, pos, pallete, this.structure, rotation, mirror);
+		this.build(world, pos, pallete, this.structure, rotation, mirror);
 	}
 
 	/**
@@ -298,19 +312,19 @@ public class Blueprint {
 	}
 
 	public void destroy(World world, BlockPos pos) {
-		destroy(world, pos, Rotation.NONE, Mirror.NONE);
+		this.destroy(world, pos, Rotation.NONE, Mirror.NONE);
 	}
 
 	public void destroy(World world, BlockPos pos, Rotation rotation) {
-		destroy(world, pos, this.pallete, this.structure, rotation, Mirror.NONE);
+		this.destroy(world, pos, this.pallete, this.structure, rotation, Mirror.NONE);
 	}
 
 	public void destroy(World world, BlockPos pos, Mirror mirror) {
-		destroy(world, pos, this.pallete, this.structure, Rotation.NONE, mirror);
+		this.destroy(world, pos, this.pallete, this.structure, Rotation.NONE, mirror);
 	}
 
 	public void destroy(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
-		destroy(world, pos, this.pallete, this.structure, rotation, mirror);
+		this.destroy(world, pos, this.pallete, this.structure, rotation, mirror);
 	}
 
 	public void destroy(World world, BlockPos pos, IBlockState[] pallete, short[][][] structure, Rotation rotation,
@@ -343,14 +357,14 @@ public class Blueprint {
 
 	/**
 	 * Transforms a BlockPos corresponding to a rotation and mirror value
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @param mirror
-	 *            The value of mirroring
+	 *                     The value of mirroring
 	 * @param rotation
-	 *            The value to rotate the blockstate
+	 *                     The value to rotate the blockstate
 	 * @return a Tranformed BlockPos
 	 */
 	protected static BlockPos transformedBlockPos(int x, int y, int z, Mirror mirror, Rotation rotation) {

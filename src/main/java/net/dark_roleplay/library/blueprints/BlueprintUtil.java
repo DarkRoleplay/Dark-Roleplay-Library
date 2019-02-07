@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +18,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 
@@ -112,8 +115,23 @@ public class BlueprintUtil {
 		NBTTagCompound[] tes = new NBTTagCompound[tileEntities.size()];
 		tes = tileEntities.toArray(tes);
 
-		Blueprint schem = new Blueprint(sizeX, sizeY, sizeZ, (byte) pallete.size(), states, structure, tes,
+        List<NBTTagCompound> entitiesTag = new ArrayList<NBTTagCompound>();
+
+        List<Entity> entities =
+          world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + sizeX, pos.getY() + sizeY, pos.getZ() + sizeZ));
+
+        for (Entity entity : entities) {
+            Vec3d oldPos = entity.getPositionVector();
+            entity.setPosition(oldPos.x - pos.getX(), oldPos.y - pos.getY(), oldPos.z - pos.getZ());
+            NBTTagCompound entityTag = new NBTTagCompound();
+            if(entity.writeToNBTOptional(entityTag))
+            	entitiesTag.add(entityTag);
+            entity.setPosition(oldPos.x, oldPos.y, oldPos.z);
+        }
+
+		Blueprint schem = new Blueprint(sizeX, sizeY, sizeZ, (short) pallete.size(), states, structure, tes,
 				requiredMods);
+        schem.setEntities(entitiesTag.toArray(new NBTTagCompound[entitiesTag.size()]));
 
 		if (name != null)
 			schem.setName(name);
