@@ -1,7 +1,6 @@
 {
     "pack": {
-        "description": "Dark Roleplay Library",
-        "pack_format": 3,
-        "_comment": "The resources of the DRP Library mod"
+        "description": "Dark Roleplay Library - Assets & Data",
+        "pack_format": 4
     }
 }

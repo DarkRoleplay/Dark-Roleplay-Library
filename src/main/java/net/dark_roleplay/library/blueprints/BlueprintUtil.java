@@ -23,7 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.ModList;
 
 /**
  * @since 0.1.0
@@ -89,9 +89,9 @@ public class BlueprintUtil {
 			short x = (short) (mutablePos.getX() - pos.getX()), y = (short) (mutablePos.getY() - pos.getY()), z = (short) (mutablePos.getZ() - pos.getZ());
 
 			if(!requiredMods.contains(modName)) {
-				if(Loader.isModLoaded(modName))
+				if(ModList.get().isLoaded(modName))
 					requiredMods.add(modName);
-			}else if(!Loader.isModLoaded(modName)) {
+			}else if(!ModList.get().isLoaded(modName)) {
 				structure[y][z][x] = (short) pallete.indexOf(Blocks.AIR.getDefaultState());
 				continue;
 			}
@@ -124,7 +124,7 @@ public class BlueprintUtil {
             Vec3d oldPos = entity.getPositionVector();
             entity.setPosition(oldPos.x - pos.getX(), oldPos.y - pos.getY(), oldPos.z - pos.getZ());
             NBTTagCompound entityTag = new NBTTagCompound();
-            if(entity.writeToNBTOptional(entityTag))
+            if(entity.writeUnlessPassenger(entityTag))
             	entitiesTag.add(entityTag);
             entity.setPosition(oldPos.x, oldPos.y, oldPos.z);
         }
@@ -162,9 +162,7 @@ public class BlueprintUtil {
 		IBlockState[] palette = schem.getPallete();
 		NBTTagList paletteTag = new NBTTagList();
 		for (short i = 0; i < schem.getPalleteSize(); i++) {
-			NBTTagCompound state = new NBTTagCompound();
-			NBTUtil.writeBlockState(state, palette[i]);
-			paletteTag.appendTag(state);
+			paletteTag.add(NBTUtil.writeBlockState(palette[i]));
 		}
 		tag.setTag("palette", paletteTag);
 
@@ -177,7 +175,7 @@ public class BlueprintUtil {
 		NBTTagList finishedTes = new NBTTagList();
 		NBTTagCompound[] tes = schem.getTileEntities();
 		for (int i = 0; i < tes.length; i++) {
-			finishedTes.appendTag(tes[i]);
+			finishedTes.add(tes[i]);
 		}
 		tag.setTag("tile_entities", finishedTes);
 
@@ -186,7 +184,7 @@ public class BlueprintUtil {
 		NBTTagList modsList = new NBTTagList();
 		for (int i = 0; i < requiredMods.size(); i++) {
 			// modsList.set(i,);
-			modsList.appendTag(new NBTTagString(requiredMods.get(i)));
+			modsList.add(new NBTTagString(requiredMods.get(i)));
 		}
 		tag.setTag("required_mods", modsList);
 
@@ -199,7 +197,7 @@ public class BlueprintUtil {
 		if (architects != null) {
 			NBTTagList architectsTag = new NBTTagList();
 			for (String architect : architects) {
-				architectsTag.appendTag(new NBTTagString(architect));
+				architectsTag.add(new NBTTagString(architect));
 			}
 			tag.setTag("architects", architectsTag);
 		}
@@ -223,10 +221,10 @@ public class BlueprintUtil {
 			List<String> requiredMods = new ArrayList<String>();
 			List<String> missingMods = new ArrayList<String>();
 			NBTTagList modsList = (NBTTagList) tag.getTag("required_mods");
-			short modListSize = (short) modsList.tagCount();
+			short modListSize = (short) modsList.size();
 			for (int i = 0; i < modListSize; i++) {
 				requiredMods.add(((NBTTagString) modsList.get(i)).getString());
-				if (!Loader.isModLoaded(requiredMods.get(i))) {
+				if (!ModList.get().isLoaded(requiredMods.get(i))) {
 					LogManager.getLogger().warn(
 							"Found missing mods for Blueprint, some blocks may be missing: " + requiredMods.get(i));
 					missingMods.add(requiredMods.get(i));
@@ -235,10 +233,10 @@ public class BlueprintUtil {
 
 			// Reading Pallete
 			NBTTagList paletteTag = (NBTTagList) tag.getTag("palette");
-			short paletteSize = (short) paletteTag.tagCount();
+			short paletteSize = (short) paletteTag.size();
 			IBlockState[] palette = new IBlockState[paletteSize];
 			for (short i = 0; i < palette.length; i++) {
-				palette[i] = NBTUtil.readBlockState(paletteTag.getCompoundTagAt(i));
+				palette[i] = NBTUtil.readBlockState(paletteTag.getCompound(i));
 			}
 
 			// Reading Blocks
@@ -246,9 +244,9 @@ public class BlueprintUtil {
 
 			// Reading Tile Entities
 			NBTTagList teTag = (NBTTagList) tag.getTag("tile_entities");
-			NBTTagCompound[] tileEntities = new NBTTagCompound[teTag.tagCount()];
+			NBTTagCompound[] tileEntities = new NBTTagCompound[teTag.size()];
 			for (short i = 0; i < tileEntities.length; i++) {
-				tileEntities[i] = teTag.getCompoundTagAt(i);
+				tileEntities[i] = teTag.getCompound(i);
 			}
 
 			Blueprint schem = new Blueprint(sizeX, sizeY, sizeZ, paletteSize, palette, blocks, tileEntities,
@@ -259,9 +257,9 @@ public class BlueprintUtil {
 			}
 			if (tag.hasKey("architects")) {
 				NBTTagList architectsTag = (NBTTagList) tag.getTag("architects");
-				String[] architects = new String[architectsTag.tagCount()];
-				for (int i = 0; i < architectsTag.tagCount(); i++) {
-					architects[i] = architectsTag.getStringTagAt(i);
+				String[] architects = new String[architectsTag.size()];
+				for (int i = 0; i < architectsTag.size(); i++) {
+					architects[i] = architectsTag.getString(i);
 				}
 				schem.setArchitects(architects);
 			}

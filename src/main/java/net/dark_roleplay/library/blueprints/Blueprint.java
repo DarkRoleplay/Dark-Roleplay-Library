@@ -4,8 +4,11 @@ import java.util.List;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -235,8 +238,8 @@ public class Blueprint {
 					IBlockState state = pallete[structure[y][z][x] & 0xFFFF];
 					if (state.getBlock() == Blocks.STRUCTURE_VOID)
 						continue;
-					if (!world.getBlockState(transformedBlockPos(x, y, z, mirror, rotation)).getBlock()
-							.isReplaceable(world, pos.add(x, y, z)))
+					if (!world.getBlockState(transformedBlockPos(x, y, z, mirror, rotation))
+							.isReplaceable(new BlockItemUseContext(world, null, ItemStack.EMPTY, pos.add(x, y, z), EnumFacing.NORTH, 0F, 0F, 0F)))
 						return false;
 				}
 			}
@@ -260,7 +263,7 @@ public class Blueprint {
 	public void build(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
 		IBlockState[] pallete = new IBlockState[this.pallete.length];
 		for (int i = 0; i < pallete.length; i++) {
-			pallete[i] = this.pallete[i].withRotation(rotation).withMirror(mirror);
+			pallete[i] = this.pallete[i].rotate(rotation).mirror(mirror);
 		}
 		this.build(world, pos, pallete, this.structure, rotation, mirror);
 	}
@@ -303,9 +306,9 @@ public class Blueprint {
 		if (this.getTileEntities() != null) {
 			for (NBTTagCompound tag : this.getTileEntities()) {
 				TileEntity te = world.getTileEntity(pos.add(tag.getShort("x"), tag.getShort("y"), tag.getShort("z")));
-				tag.setInteger("x", pos.getX() + tag.getShort("x"));
-				tag.setInteger("y", pos.getY() + tag.getShort("y"));
-				tag.setInteger("z", pos.getZ() + tag.getShort("z"));
+				tag.setInt("x", pos.getX() + tag.getShort("x"));
+				tag.setInt("y", pos.getY() + tag.getShort("y"));
+				tag.setInt("z", pos.getZ() + tag.getShort("z"));
 				te.deserializeNBT(tag);
 			}
 		}
