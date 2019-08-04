@@ -6,19 +6,19 @@ import net.minecraft.util.math.BlockPos;
 
 public class Settings {
 
-	private BlockPos pos;
-	
-	private Mirror mirror;
-	
-	private Rotation rotation;
-	
-	private boolean placeEntities;
-	
-	private boolean editingMode;
-	
+	private BlockPos	pos;
+
+	private Mirror		mirror;
+
+	private Rotation	rotation;
+
+	private boolean		placeEntities;
+
+	private boolean		editingMode;
+
 	/**
-	 * @param pos The positon the Blueprint should be placed at
-	 * @param mirror Should the Blueprint be mirrored
+	 * @param pos      The positon the Blueprint should be placed at
+	 * @param mirror   Should the Blueprint be mirrored
 	 * @param rotation Should the Blueprint be rotated
 	 */
 	public Settings(BlockPos pos, Mirror mirror, Rotation rotation) {
@@ -28,13 +28,14 @@ public class Settings {
 		this.placeEntities = false;
 		this.editingMode = false;
 	}
-	
+
 	/**
-	 * @param pos The positon the Blueprint should be placed at
-	 * @param mirror Should the Blueprint be mirrored
-	 * @param rotation Should the Blueprint be rotated
+	 * @param pos           The positon the Blueprint should be placed at
+	 * @param mirror        Should the Blueprint be mirrored
+	 * @param rotation      Should the Blueprint be rotated
 	 * @param placeEntities should Entities be spawned
-	 * @param editingMode If false blocks like "structure void" and "data blocks", if true it will place these entities.
+	 * @param editingMode   If false blocks like "structure void" and "data
+	 *                      blocks", if true it will place these entities.
 	 */
 	public Settings(BlockPos pos, Mirror mirror, Rotation rotation, boolean placeEntities, boolean editingMode) {
 		this.pos = pos;
@@ -44,25 +45,16 @@ public class Settings {
 		this.editingMode = editingMode;
 	}
 
-	public BlockPos getPos() {
-		return pos;
-	}
+	public BlockPos getPos() { return pos; }
 
-	public Mirror getMirror() {
-		return mirror;
-	}
+	public Mirror getMirror() { return mirror; }
 
-	public Rotation getRotation() {
-		return rotation;
-	}
+	public Rotation getRotation() { return rotation; }
 
 	public boolean shouldPlaceEntities() {
 		return placeEntities;
 	}
 
-	public boolean isEditingMode() {
-		return editingMode;
-	}
-	
-	
+	public boolean isEditingMode() { return editingMode; }
+
 }

@@ -2,10 +2,14 @@ package net.dark_roleplay.library.blueprints;
 
 import java.util.List;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -17,20 +21,19 @@ import net.minecraft.world.World;
  */
 public class Blueprint {
 
-	private List<String> requiredMods;
-	private short sizeX, sizeY, sizeZ;
-	private short palleteSize;
-	private IBlockState[] pallete;
-	private String name;
-	private String[] architects;
-	private String[] missingMods;
+	private List<String>	requiredMods;
+	private short			sizeX, sizeY, sizeZ;
+	private short			palleteSize;
+	private BlockState[]	pallete;
+	private String			name;
+	private String[]		architects;
+	private String[]		missingMods;
 
-	private short[][][] structure;
-	private NBTTagCompound[] tileEntities;
-    private NBTTagCompound[] entities;
+	private short[][][]		structure;
+	private CompoundNBT[]	tileEntities;
+	private CompoundNBT[]	entities;
 
-	protected Blueprint(short sizeX, short sizeY, short sizeZ, short palleteSize, IBlockState[] pallete,
-			short[][][] structure, NBTTagCompound[] tileEntities, List<String> requiredMods) {
+	protected Blueprint(short sizeX, short sizeY, short sizeZ, short palleteSize, BlockState[] pallete, short[][][] structure, CompoundNBT[] tileEntities, List<String> requiredMods) {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.sizeZ = sizeZ;
@@ -45,68 +48,51 @@ public class Blueprint {
 	 * @return the Size of the Structure on the X-Axis (without rotation and/or
 	 *         mirroring)
 	 */
-	public short getSizeX() {
-		return this.sizeX;
-	}
+	public short getSizeX() { return this.sizeX; }
 
 	/**
 	 * @return the Size of the Structure on the Y-Axis (without rotation and/or
 	 *         mirroring)
 	 */
-	public short getSizeY() {
-		return this.sizeY;
-	}
+	public short getSizeY() { return this.sizeY; }
 
 	/**
 	 * @return the Size of the Structure on the Z-Axis (without rotation and/or
 	 *         mirroring)
 	 */
-	public short getSizeZ() {
-		return this.sizeZ;
-	}
+	public short getSizeZ() { return this.sizeZ; }
 
 	/**
 	 * @return the amount of Blockstates within the pallete
 	 */
-	public short getPalleteSize() {
-		return this.palleteSize;
-	}
+	public short getPalleteSize() { return this.palleteSize; }
 
 	/**
 	 * @return the pallete (without rotation and/or mirroring)
 	 */
-	public IBlockState[] getPallete() {
-		return this.pallete;
-	}
+	public BlockState[] getPallete() { return this.pallete; }
 
 	/**
 	 * @return the structure (without rotation and/or mirroring)
 	 */
-	public short[][][] getStructure() {
-		return this.structure;
-	}
+	public short[][][] getStructure() { return this.structure; }
 
 	/**
-	 * @return an array of serialized TileEntities (posX, posY and posZ tags have
+	 * @return an array of serialized TileEntities (posX, posY and posZ tags
+	 *         have
 	 *         been localized to coordinates within the structure)
 	 */
-	public NBTTagCompound[] getTileEntities() {
-		return this.tileEntities;
-	}
+	public CompoundNBT[] getTileEntities() { return this.tileEntities; }
 
 	/**
 	 * @return a list of all required mods as modid's
 	 */
-	public List<String> getRequiredMods() {
-		return this.requiredMods;
-	}
+	public List<String> getRequiredMods() { return this.requiredMods; }
 
 	/**
 	 * @return the Name of the Structure
 	 */
-	public String getName() {
-		return this.name;
-	}
+	public String getName() { return this.name; }
 
 	/**
 	 * Sets the name of the Structure
@@ -121,9 +107,7 @@ public class Blueprint {
 	/**
 	 * @return an Array of all architects for this structure
 	 */
-	public String[] getArchitects() {
-		return this.architects;
-	}
+	public String[] getArchitects() { return this.architects; }
 
 	/**
 	 * Sets an Array of all architects for this structure
@@ -139,9 +123,7 @@ public class Blueprint {
 	 * @return An Array of all missing mods that are required to generate this
 	 *         structure (only works if structure was loaded from file)
 	 */
-	public String[] getMissingMods() {
-		return this.missingMods;
-	}
+	public String[] getMissingMods() { return this.missingMods; }
 
 	/**
 	 * Sets the missing mods
@@ -154,31 +136,28 @@ public class Blueprint {
 	}
 
 	/**
-	 * @return an array of serialized TileEntities (the Pos tag has been localized
+	 * @return an array of serialized TileEntities (the Pos tag has been
+	 *         localized
 	 *         to coordinates within the structure)
 	 */
-	public NBTTagCompound[] getEntities() {
-		return this.entities;
-	}
+	public CompoundNBT[] getEntities() { return this.entities; }
 
 	/**
 	 * @param entities
-	 *                     an array of serialized TileEntities (the Pos tag need to
-	 *                     be localized to coordinates within the structure)
+	 *                 an array of serialized TileEntities (the Pos tag need to
+	 *                 be localized to coordinates within the structure)
 	 */
-	public void setEntities(NBTTagCompound[] entities) {
-		this.entities = entities;
-	}
+	public void setEntities(CompoundNBT[] entities) { this.entities = entities; }
 
 	/**
 	 * Checks if no Blocks are overlapping with the structure
 	 *
 	 * @param world
-	 *                   The World in which to check
+	 *               The World in which to check
 	 * @param pos
-	 *                   The Position at which to check
+	 *               The Position at which to check
 	 * @param mirror
-	 *                   The Mirroring to Use
+	 *               The Mirroring to Use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Mirror mirror) {
@@ -189,9 +168,9 @@ public class Blueprint {
 	 * Checks if no Blocks are overlapping with the structure
 	 *
 	 * @param world
-	 *                  The World in which to check
+	 *              The World in which to check
 	 * @param pos
-	 *                  The Position at which to check
+	 *              The Position at which to check
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos) {
@@ -202,11 +181,11 @@ public class Blueprint {
 	 * Checks if no Blocks are overlapping with the structure
 	 *
 	 * @param world
-	 *                     The World in which to check
+	 *                 The World in which to check
 	 * @param pos
-	 *                     The Position at which to check
+	 *                 The Position at which to check
 	 * @param rotation
-	 *                     The Rotation to use
+	 *                 The Rotation to use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Rotation rotation) {
@@ -217,27 +196,24 @@ public class Blueprint {
 	 * Checks if no Blocks are overlapping with the structure
 	 *
 	 * @param world
-	 *                     The World in which to check
+	 *                 The World in which to check
 	 * @param pos
-	 *                     The Position at which to check
+	 *                 The Position at which to check
 	 * @param rotation
-	 *                     The Rotation to use
+	 *                 The Rotation to use
 	 * @param mirror
-	 *                     The Mirroring to Use
+	 *                 The Mirroring to Use
 	 * @return true if the structure can be generated at given position.
 	 */
 	public boolean canBuild(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
-		IBlockState[] pallete = this.getPallete();
-		short[][][] structure = this.getStructure();
-		for (short y = 0; y < this.getSizeY(); y++) {
-			for (short z = 0; z < this.getSizeZ(); z++) {
-				for (short x = 0; x < this.getSizeX(); x++) {
-					IBlockState state = pallete[structure[y][z][x] & 0xFFFF];
-					if (state.getBlock() == Blocks.STRUCTURE_VOID)
-						continue;
-					if (!world.getBlockState(transformedBlockPos(x, y, z, mirror, rotation)).getBlock()
-							.isReplaceable(world, pos.add(x, y, z)))
-						return false;
+		BlockState[]	pallete		= this.getPallete();
+		short[][][]		structure	= this.getStructure();
+		for(short y = 0; y < this.getSizeY(); y++ ) {
+			for(short z = 0; z < this.getSizeZ(); z++ ) {
+				for(short x = 0; x < this.getSizeX(); x++ ) {
+					BlockState state = pallete[structure[y][z][x] & 0xFFFF];
+					if(state.getBlock() == Blocks.STRUCTURE_VOID) continue;
+					if( !world.getBlockState(transformedBlockPos(x, y, z, mirror, rotation)).isReplaceable(new BlockItemUseContext(new ItemUseContext(null, null, null)))) return false;
 				}
 			}
 		}
@@ -248,37 +224,36 @@ public class Blueprint {
 	 * Used to generate a Blueprint with Rotation and Mirroring
 	 *
 	 * @param world
-	 *                     The world to generate the structure
+	 *                 The world to generate the structure
 	 * @param pos
-	 *                     The Position to build the structure
+	 *                 The Position to build the structure
 	 * @param rotation
-	 *                     The Rotation with which the structure should be generated
+	 *                 The Rotation with which the structure should be generated
 	 * @param mirror
-	 *                     The Mirroring with which the structure should be
-	 *                     generated
+	 *                 The Mirroring with which the structure should be
+	 *                 generated
 	 */
 	public void build(World world, BlockPos pos, Rotation rotation, Mirror mirror) {
-		IBlockState[] pallete = new IBlockState[this.pallete.length];
-		for (int i = 0; i < pallete.length; i++) {
-			pallete[i] = this.pallete[i].withRotation(rotation).withMirror(mirror);
+		BlockState[] pallete = new BlockState[this.pallete.length];
+		for(int i = 0; i < pallete.length; i++ ) {
+			pallete[i] = this.pallete[i].rotate(rotation).mirror(mirror);
 		}
 		this.build(world, pos, pallete, this.structure, rotation, mirror);
 	}
 
 	/**
-	 * The main method to generate a structure, rotation and mirror don't affect the
+	 * The main method to generate a structure, rotation and mirror don't affect
+	 * the
 	 * pallete, it does just change the structure.
 	 */
-	protected void build(World world, BlockPos pos, IBlockState[] pallete, short[][][] structure, Rotation rotation,
-			Mirror mirror) {
-		for (short y = 0; y < structure.length; y++) {
-			for (short z = 0; z < structure[0].length; z++) {
-				for (short x = 0; x < structure[0][0].length; x++) {
+	protected void build(World world, BlockPos pos, BlockState[] pallete, short[][][] structure, Rotation rotation, Mirror mirror) {
+		for(short y = 0; y < structure.length; y++ ) {
+			for(short z = 0; z < structure[0].length; z++ ) {
+				for(short x = 0; x < structure[0][0].length; x++ ) {
 
-					IBlockState state = pallete[structure[y][z][x] & 0xFFFF];
-					if (state.getBlock() == Blocks.STRUCTURE_VOID)
-						continue;
-					if (state.isFullCube()) {
+					BlockState state = pallete[structure[y][z][x] & 0xFFFF];
+					if(state.getBlock() == Blocks.STRUCTURE_VOID) continue;
+					if(state.isSolid()) {
 						BlockPos rotated = transformedBlockPos(x, y, z, mirror, rotation);
 						world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()), state, 2);
 					}
@@ -286,13 +261,12 @@ public class Blueprint {
 			}
 		}
 
-		for (short y = 0; y < this.getSizeY(); y++) {
-			for (short z = 0; z < this.getSizeZ(); z++) {
-				for (short x = 0; x < this.getSizeX(); x++) {
-					IBlockState state = pallete[structure[y][z][x]];
-					if (state.getBlock() == Blocks.STRUCTURE_VOID)
-						continue;
-					if (!state.isFullCube()) {
+		for(short y = 0; y < this.getSizeY(); y++ ) {
+			for(short z = 0; z < this.getSizeZ(); z++ ) {
+				for(short x = 0; x < this.getSizeX(); x++ ) {
+					BlockState state = pallete[structure[y][z][x]];
+					if(state.getBlock() == Blocks.STRUCTURE_VOID) continue;
+					if( !state.isSolid()) {
 						BlockPos rotated = transformedBlockPos(x, y, z, Mirror.NONE, rotation);
 						world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()), state, 2);
 					}
@@ -300,12 +274,12 @@ public class Blueprint {
 			}
 		}
 
-		if (this.getTileEntities() != null) {
-			for (NBTTagCompound tag : this.getTileEntities()) {
+		if(this.getTileEntities() != null) {
+			for(CompoundNBT tag : this.getTileEntities()) {
 				TileEntity te = world.getTileEntity(pos.add(tag.getShort("x"), tag.getShort("y"), tag.getShort("z")));
-				tag.setInteger("x", pos.getX() + tag.getShort("x"));
-				tag.setInteger("y", pos.getY() + tag.getShort("y"));
-				tag.setInteger("z", pos.getZ() + tag.getShort("z"));
+				tag.putInt("x", pos.getX() + tag.getShort("x"));
+				tag.putInt("y", pos.getY() + tag.getShort("y"));
+				tag.putInt("z", pos.getZ() + tag.getShort("z"));
 				te.deserializeNBT(tag);
 			}
 		}
@@ -327,28 +301,25 @@ public class Blueprint {
 		this.destroy(world, pos, this.pallete, this.structure, rotation, mirror);
 	}
 
-	public void destroy(World world, BlockPos pos, IBlockState[] pallete, short[][][] structure, Rotation rotation,
-			Mirror mirror) {
+	public void destroy(World world, BlockPos pos, BlockState[] pallete, short[][][] structure, Rotation rotation, Mirror mirror) {
 		int indexVoid = -1;
-		for (short y = 0; y < structure.length; y++) {
-			for (short z = 0; z < structure[0].length; z++) {
-				for (short x = 0; x < structure[0][0].length; x++) {
+		for(short y = 0; y < structure.length; y++ ) {
+			for(short z = 0; z < structure[0].length; z++ ) {
+				for(short x = 0; x < structure[0][0].length; x++ ) {
 
-					if (indexVoid == -1) {
-						IBlockState state = pallete[structure[y][z][x] & 0xFFFF];
-						if (state.getBlock() == Blocks.STRUCTURE_VOID) {
+					if(indexVoid == -1) {
+						BlockState state = pallete[structure[y][z][x] & 0xFFFF];
+						if(state.getBlock() == Blocks.STRUCTURE_VOID) {
 							indexVoid = structure[y][z][x];
 						} else {
 							BlockPos rotated = transformedBlockPos(x, y, z, mirror, rotation);
-							world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()),
-									Blocks.AIR.getDefaultState(), 2);
+							world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()), Blocks.AIR.getDefaultState(), 2);
 						}
-					} else if (structure[y][z][x] == indexVoid) {
+					} else if(structure[y][z][x] == indexVoid) {
 						continue;
 					} else {
 						BlockPos rotated = transformedBlockPos(x, y, z, mirror, rotation);
-						world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()),
-								Blocks.AIR.getDefaultState(), 2);
+						world.setBlockState(pos.add(rotated.getX(), rotated.getY(), rotated.getZ()), Blocks.AIR.getDefaultState(), 2);
 					}
 				}
 			}
@@ -362,34 +333,34 @@ public class Blueprint {
 	 * @param y
 	 * @param z
 	 * @param mirror
-	 *                     The value of mirroring
+	 *                 The value of mirroring
 	 * @param rotation
-	 *                     The value to rotate the blockstate
+	 *                 The value to rotate the blockstate
 	 * @return a Tranformed BlockPos
 	 */
 	protected static BlockPos transformedBlockPos(int x, int y, int z, Mirror mirror, Rotation rotation) {
 		boolean flag = true;
 
-		switch (mirror) {
-		case LEFT_RIGHT:
-			z = -z;
-			break;
-		case FRONT_BACK:
-			x = -x;
-			break;
-		default:
-			flag = false;
+		switch(mirror) {
+			case LEFT_RIGHT:
+				z = -z;
+				break;
+			case FRONT_BACK:
+				x = -x;
+				break;
+			default:
+				flag = false;
 		}
 
-		switch (rotation) {
-		case COUNTERCLOCKWISE_90:
-			return new BlockPos(z, y, -x);
-		case CLOCKWISE_90:
-			return new BlockPos(-z, y, x);
-		case CLOCKWISE_180:
-			return new BlockPos(-x, y, -z);
-		default:
-			return flag ? new BlockPos(x, y, z) : new BlockPos(x, y, z);
+		switch(rotation) {
+			case COUNTERCLOCKWISE_90:
+				return new BlockPos(z, y, -x);
+			case CLOCKWISE_90:
+				return new BlockPos( -z, y, x);
+			case CLOCKWISE_180:
+				return new BlockPos( -x, y, -z);
+			default:
+				return flag ? new BlockPos(x, y, z) : new BlockPos(x, y, z);
 		}
 	}
 }

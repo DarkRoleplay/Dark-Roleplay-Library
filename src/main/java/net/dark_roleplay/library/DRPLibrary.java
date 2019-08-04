@@ -1,98 +1,56 @@
 package net.dark_roleplay.library;
 
-import net.dark_roleplay.library.experimental.connected_model.ConnectedModelLoader;
-import net.dark_roleplay.library.experimental.guis.ModularGui_Handler;
-import net.dark_roleplay.library.sides.IProxy;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IReloadableResourceManager;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = References.MODID, version = References.VERSION, name = References.NAME, acceptedMinecraftVersions = References.ACCEPTEDVERSIONS, certificateFingerprint = "893c317856cf6819b3a8381c5664e4b06df7d1cc")
+import net.dark_roleplay.library.configs.prefabs.RGB;
+import net.dark_roleplay.library.configs.prefabs.RGBA;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+
+@Mod(DRPLibrary.MODID)
 public class DRPLibrary {
 
-	@SidedProxy(modId = References.MODID)
-	public static IProxy proxy;
+	public static final String	MODID	= "drplibrary";
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event){
-		References.init(event);
-		proxy.preInit(event);
+	// Directly reference a log4j logger.
+	public static final Logger	LOGGER	= LogManager.getLogger();
+
+	public DRPLibrary() {
+		// ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,
+		// DebugConfig.CONFIG_SPEC);
+		// ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
+		// () -> {
+		//
+		// });
 	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		proxy.init(event);
-	}
+	// modLoadingContext.registerExtensionPoint(ExtensionPoint.GUIFACTORY, () ->
+	// GuiHandler.Client::getClientGuiElement);
 
-//	@EventBusSubscriber(modid = References.MODID)
-//	public static class RegistriesAndStuff{
-//		@SubscribeEvent
-//		public static void registerItems(RegistryEvent.Register<Item> event) {
-//			for(Item item : items) {
-//				event.getRegistry().register(item);
-//			}
-//		}
-//
-//		@SubscribeEvent
-//		public static void registerBlocks(RegistryEvent.Register<Block> event) {
-////			Block block = new ConnectedModelBlock();
-////			registerBlocks(event.getRegistry(), CreativeTabs.BUILDING_BLOCKS,
-////
-////				new Block(Material.IRON)
-////					.setRegistryName(References.MODID, "block name"),
-////
-////				new Block(Material.IRON)
-////					.setRegistryName(References.MODID, "block2 name"),
-////
-////				new Block(Material.IRON)
-////					.setRegistryName(References.MODID, "block3 name"),
-////
-////				block
-////			);
-//
-////			ConnectedModelLoader.registerConnectedModelBlock(block);
-//		}
-//
-//		//We create a list, in which we store all ItemBlocks
-//		private static List<Item> items = new ArrayList<Item>();
-//
-//		//A method that automaticly creates an Item for a Block
-//		private static void registerBlocks(IForgeRegistry<Block> registry, CreativeTabs tab, Block... blocks) {
-//			for(Block block : blocks) {
-//				registry.register(block);
-//
-//				ItemBlock item = (ItemBlock) new ItemBlock(block).setRegistryName(block.getRegistryName()).setCreativeTab(tab);
-//				items.add(item);
-//			}
-//		}
-//	}
+	public static class DebugConfig {
 
-	public static class ServerProxy implements IProxy{
+		public static final DebugConfig			CONFIG;
+		public static final ForgeConfigSpec		CONFIG_SPEC;
 
-	}
+		public final RGB						rgb;
+		public final ForgeConfigSpec.IntValue	rgba;
 
-	@SideOnly(Side.CLIENT)
-	public static class ClientProxy implements IProxy{
-
-		@Override
-		public void preInit(FMLPreInitializationEvent event) {
-			ModelLoaderRegistry.registerLoader(new ConnectedModelLoader());
+		static {
+			Pair<DebugConfig, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(DebugConfig::new);
+			CONFIG_SPEC = specPair.getRight();
+			CONFIG = specPair.getLeft();
 		}
 
-		@Override
-		public void init(FMLInitializationEvent event) {
-			IResourceManager manager = Minecraft.getMinecraft().getResourceManager();
-			if(manager instanceof IReloadableResourceManager) {
-				((IReloadableResourceManager)manager).registerReloadListener(new ModularGui_Handler());
-			}
+		public DebugConfig(ForgeConfigSpec.Builder builder) {
+			builder.push("testing");
+			rgb = new RGB("rgb", builder);
+			rgba = builder.comment("Test 2").translation("drplibrary.config.test2").defineInRange("rgba", 0xFFFF0000, 0, 0xFFFFFFFF);
+			builder.pop();
 		}
 	}
 }
